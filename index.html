@@ -1,0 +1,2000 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Talerang | Campus Ambassador</title>
+
+    <!-- Professional font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="index.css">
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     LOGIN / SIGNUP
+===================================================== -->
+
+<div id="authPage" class="auth-page">
+
+    <div class="auth-wrapper">
+
+        <!-- LEFT BRAND PANEL -->
+
+        <div class="auth-brand">
+
+            <img
+                src="talerang-logo.png"
+                alt="Talerang"
+                class="auth-logo"
+            >
+
+            <div class="brand-content">
+
+                <span class="brand-label">
+                    CAMPUS AMBASSADOR PROGRAM
+                </span>
+
+                <h1>
+                    Build your campus.
+                    <br>
+                    Build your impact.
+                </h1>
+
+                <p>
+                    Manage your activities, earn points,
+                    and progress towards leadership with Talerang.
+                </p>
+
+            </div>
+
+            <div class="brand-footer">
+                © Talerang
+            </div>
+
+        </div>
+
+
+        <!-- RIGHT LOGIN PANEL -->
+
+        <div class="auth-form-panel">
+
+            <div class="auth-form-content">
+
+                <div class="mobile-logo">
+                    <img
+                        src="talerang-logo.png"
+                        alt="Talerang"
+                    >
+                </div>
+
+
+                <div class="auth-tabs">
+
+                    <button
+                        id="loginTab"
+                        class="auth-tab active"
+                    >
+                        Login
+                    </button>
+
+                    <button
+                        id="signupTab"
+                        class="auth-tab"
+                    >
+                        Sign Up
+                    </button>
+
+                </div>
+
+
+                <div class="auth-heading">
+
+                    <span class="small-red-text">
+                        TALERANG CAMPUS AMBASSADOR
+                    </span>
+
+                    <h2 id="authTitle">
+                        Welcome back
+                    </h2>
+
+                    <p id="authSubtitle">
+                        Sign in to continue to your portal.
+                    </p>
+
+                </div>
+
+
+                <p id="authMessage" class="auth-message"></p>
+
+
+                <!-- LOGIN FORM -->
+
+                <form id="loginForm">
+
+                    <div class="form-group">
+
+                        <label>Email or Mobile</label>
+
+                        <input
+                            type="text"
+                            id="loginIdentity"
+                            placeholder="Enter your email or mobile"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>Password</label>
+
+                        <input
+                            type="password"
+                            id="loginPassword"
+                            placeholder="Enter your password"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="forgot-row">
+
+                        <button
+                            type="button"
+                            id="forgotPassword"
+                        >
+                            Forgot password?
+                        </button>
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="auth-primary-btn"
+                    >
+                        Login
+                    </button>
+
+
+                    <p class="auth-switch">
+
+                        Don't have an account?
+
+                        <button
+                            type="button"
+                            id="goSignup"
+                        >
+                            Create account
+                        </button>
+
+                    </p>
+
+                </form>
+
+
+                <!-- SIGNUP FORM -->
+
+                <form id="signupForm" class="hidden">
+
+                    <div class="form-row">
+
+                        <div class="form-group">
+
+                            <label>Full Name</label>
+
+                            <input
+                                type="text"
+                                id="signupName"
+                                placeholder="Full name"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>Mobile Number</label>
+
+                            <input
+                                type="tel"
+                                id="signupMobile"
+                                placeholder="Mobile number"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>Email</label>
+
+                        <input
+                            type="email"
+                            id="signupEmail"
+                            placeholder="Email address"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>College</label>
+
+                        <input
+                            type="text"
+                            id="signupCollege"
+                            placeholder="College / University"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>LinkedIn Profile</label>
+
+                        <input
+                            type="url"
+                            id="signupLinkedin"
+                            placeholder="https://linkedin.com/in/yourname"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-row">
+
+                        <div class="form-group">
+
+                            <label>Password</label>
+
+                            <input
+                                type="password"
+                                id="signupPassword"
+                                placeholder="Create password"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>Confirm Password</label>
+
+                            <input
+                                type="password"
+                                id="signupConfirmPassword"
+                                placeholder="Confirm password"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="auth-primary-btn"
+                    >
+                        Create account
+                    </button>
+
+
+                    <p class="auth-switch">
+
+                        Already have an account?
+
+                        <button
+                            type="button"
+                            id="goLogin"
+                        >
+                            Login
+                        </button>
+
+                    </p>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     STUDENT PORTAL
+===================================================== -->
+
+<div id="portalPage" class="portal hidden">
+
+
+    <!-- =================================================
+         SIDEBAR
+    ================================================= -->
+
+    <aside class="sidebar">
+
+
+        <div class="sidebar-brand">
+
+            <div class="logo-box">
+
+                <img
+                    src="talerang-logo.png"
+                    alt="Talerang"
+                >
+
+            </div>
+
+            <span>
+                CAMPUS AMBASSADOR
+            </span>
+
+        </div>
+
+
+        <!-- USER -->
+
+        <div class="sidebar-user">
+
+            <div
+                class="sidebar-avatar"
+                id="sidebarAvatar"
+            >
+                A
+            </div>
+
+
+            <div class="sidebar-user-details">
+
+                <strong id="sidebarName">
+                    Avni Agarwal
+                </strong>
+
+                <span id="sidebarPosition">
+                    Campus Ambassador
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- NAVIGATION -->
+
+        <nav class="sidebar-nav">
+
+
+            <button
+                class="nav-item active"
+                data-page="home"
+            >
+
+                <span class="nav-symbol">⌂</span>
+
+                <span>Home</span>
+
+            </button>
+
+
+            <button
+                class="nav-item"
+                data-page="dashboard"
+            >
+
+                <span class="nav-symbol">▦</span>
+
+                <span>Dashboard</span>
+
+            </button>
+
+
+            <button
+                class="nav-item"
+                data-page="tasks"
+            >
+
+                <span class="nav-symbol">✓</span>
+
+                <span>Tasks</span>
+
+            </button>
+
+
+            <button
+                class="nav-item"
+                data-page="rankings"
+            >
+
+                <span class="nav-symbol">★</span>
+
+                <span>Rankings</span>
+
+            </button>
+
+
+            <button
+                class="nav-item"
+                data-page="announcements"
+            >
+
+                <span class="nav-symbol">!</span>
+
+                <span>Announcements</span>
+
+            </button>
+
+
+            <button
+                class="nav-item"
+                data-page="profile"
+            >
+
+                <span class="nav-symbol">○</span>
+
+                <span>Profile</span>
+
+            </button>
+
+
+        </nav>
+
+
+        <button
+            id="logoutBtn"
+            class="logout-btn"
+        >
+            Logout
+        </button>
+
+
+    </aside>
+
+
+    <!-- =================================================
+         MAIN CONTENT
+    ================================================= -->
+
+    <main class="main-content">
+
+
+        <!-- TOP BAR -->
+
+        <header class="topbar">
+
+            <div>
+
+                <span class="topbar-label">
+                    TALERANG
+                </span>
+
+                <h3 id="pageTitle">
+                    Home
+                </h3>
+
+            </div>
+
+
+            <div class="top-user">
+
+                <div
+                    class="top-avatar"
+                    id="topAvatar"
+                >
+                    A
+                </div>
+
+
+                <div class="top-user-info">
+
+                    <strong id="welcomeName">
+                        Avni Agarwal
+                    </strong>
+
+                    <span>
+                        Campus Ambassador
+                    </span>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             HOME
+        ================================================= -->
+
+        <section
+            id="home"
+            class="portal-section active-section"
+        >
+
+
+            <div class="home-welcome">
+
+                <div class="home-welcome-content">
+
+                    <span class="section-label">
+                        CAMPUS AMBASSADOR PROGRAM
+                    </span>
+
+                    <h1>
+                        Welcome,
+                        <span id="homeName">
+                            Avni
+                        </span>
+                    </h1>
+
+                    <p>
+                        Your journey starts here. Complete activities,
+                        earn approved points and grow towards your next
+                        leadership level.
+                    </p>
+
+
+                    <button
+                        class="dark-btn"
+                        data-go="dashboard"
+                    >
+                        View My Dashboard
+                        <span>→</span>
+                    </button>
+
+                </div>
+
+
+                <div class="home-score">
+
+                    <span>
+                        YOUR POINTS
+                    </span>
+
+                    <strong id="homeScore">
+                        110
+                    </strong>
+
+                    <small>
+                        / 300 to next level
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <!-- QUICK OVERVIEW -->
+
+            <div class="home-section-heading">
+
+                <div>
+
+                    <span class="section-label">
+                        QUICK OVERVIEW
+                    </span>
+
+                    <h2>
+                        Your progress
+                    </h2>
+
+                </div>
+
+                <button
+                    class="simple-link"
+                    data-go="dashboard"
+                >
+                    View details →
+                </button>
+
+            </div>
+
+
+            <div class="home-cards">
+
+
+                <div class="home-card">
+
+                    <span class="home-card-label">
+                        CURRENT POSITION
+                    </span>
+
+                    <strong id="homePosition">
+                        Campus Ambassador
+                    </strong>
+
+                    <p>
+                        Your current leadership level
+                    </p>
+
+                </div>
+
+
+                <div class="home-card">
+
+                    <span class="home-card-label">
+                        COMPLETED ACTIVITIES
+                    </span>
+
+                    <strong>
+                        <span id="homeCompleted">
+                            2
+                        </span> / 5
+                    </strong>
+
+                    <p>
+                        Activities completed
+                    </p>
+
+                </div>
+
+
+                <div class="home-card">
+
+                    <span class="home-card-label">
+                        CURRENT RANK
+                    </span>
+
+                    <strong>
+                        #<span id="homeRank">
+                            12
+                        </span>
+                    </strong>
+
+                    <p>
+                        Among Campus Ambassadors
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- HOME ACTIONS -->
+
+            <div class="home-bottom-grid">
+
+
+                <div class="simple-panel">
+
+                    <div class="panel-heading">
+
+                        <div>
+
+                            <span class="section-label">
+                                GET STARTED
+                            </span>
+
+                            <h2>
+                                Complete your first activities
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <p>
+                        Start earning points by completing activities
+                        such as referrals, workshops, material distribution
+                        and social media engagement.
+                    </p>
+
+
+                    <button
+                        class="outline-dark-btn"
+                        data-go="tasks"
+                    >
+                        Explore Tasks →
+                    </button>
+
+                </div>
+
+
+                <div class="announcement-mini">
+
+                    <span class="section-label">
+                        LATEST UPDATE
+                    </span>
+
+                    <h2>
+                        Weekly Ambassador Session
+                    </h2>
+
+                    <p>
+                        Stay connected with the Talerang team
+                        through the weekly ambassador session.
+                    </p>
+
+                    <button
+                        class="simple-link"
+                        data-go="announcements"
+                    >
+                        View announcement →
+                    </button>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+        <!-- =================================================
+             DASHBOARD
+        ================================================= -->
+
+        <section
+            id="dashboard"
+            class="portal-section"
+        >
+
+
+            <div class="page-heading">
+
+                <span class="section-label">
+                    YOUR PERFORMANCE
+                </span>
+
+                <h1>
+                    Dashboard
+                </h1>
+
+                <p>
+                    Track your points, activities and leadership progress.
+                </p>
+
+            </div>
+
+
+            <!-- STATS -->
+
+            <div class="stats-grid">
+
+
+                <div class="stat-card">
+
+                    <span class="stat-label">
+                        TOTAL POINTS
+                    </span>
+
+                    <strong id="dashboardPoints">
+                        110
+                    </strong>
+
+                    <small>
+                        Approved points
+                    </small>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <span class="stat-label">
+                        COMPLETED TASKS
+                    </span>
+
+                    <strong>
+                        <span id="dashboardCompleted">
+                            2
+                        </span>
+                        / 5
+                    </strong>
+
+                    <small>
+                        Activities completed
+                    </small>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <span class="stat-label">
+                        CURRENT POSITION
+                    </span>
+
+                    <strong
+                        id="currentPosition"
+                        class="stat-position"
+                    >
+                        Campus Ambassador
+                    </strong>
+
+                    <small>
+                        Next: Chapter President
+                    </small>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <span class="stat-label">
+                        CURRENT RANK
+                    </span>
+
+                    <strong>
+                        #<span id="dashboardRank">
+                            12
+                        </span>
+                    </strong>
+
+                    <small>
+                        Among ambassadors
+                    </small>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- POSITION -->
+
+            <div class="position-card">
+
+                <div>
+
+                    <span class="section-label light">
+                        CURRENT POSITION
+                    </span>
+
+                    <h2 id="dashboardPosition">
+                        Campus Ambassador
+                    </h2>
+
+                    <p>
+                        Reach 300 approved points to become eligible
+                        for the next leadership level.
+                    </p>
+
+                </div>
+
+
+                <div class="score-ring">
+
+                    <strong id="dashboardScore">
+                        110
+                    </strong>
+
+                    <span>
+                        / 300
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- POINT SYSTEM -->
+
+            <div class="content-card">
+
+                <div class="card-title-row">
+
+                    <div>
+
+                        <h2>
+                            How You Earn Points
+                        </h2>
+
+                        <p>
+                            Complete activities and earn approved points.
+                        </p>
+
+                    </div>
+
+                    <span class="target-pill">
+                        300 Point Target
+                    </span>
+
+                </div>
+
+
+                <div class="table-container">
+
+                    <table class="points-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Activity
+                                </th>
+
+                                <th>
+                                    Points
+                                </th>
+
+                                <th>
+                                    Frequency / Criteria
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            <tr>
+
+                                <td>
+                                    Refer a Student
+                                </td>
+
+                                <td>
+                                    80 pts
+                                </td>
+
+                                <td>
+                                    Per successful referral
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td>
+                                    Host a Workshop
+                                </td>
+
+                                <td>
+                                    100 pts
+                                </td>
+
+                                <td>
+                                    Per successfully conducted workshop
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td>
+                                    Distribute Talerang Material
+                                </td>
+
+                                <td>
+                                    30 pts
+                                </td>
+
+                                <td>
+                                    Per completed distribution activity
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td>
+                                    Social Media Post
+                                </td>
+
+                                <td>
+                                    50 pts
+                                </td>
+
+                                <td>
+                                    Per approved post with Talerang tagging
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td>
+                                    Weekly Team Call
+                                </td>
+
+                                <td>
+                                    10 pts / call
+                                </td>
+
+                                <td>
+                                    Maximum 40 points from 4 weekly calls per month
+                                </td>
+
+                            </tr>
+
+
+                            <tr class="total-row">
+
+                                <td>
+                                    TOTAL
+                                </td>
+
+                                <td>
+                                    300 pts
+                                </td>
+
+                                <td>
+                                    Target for next level
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+
+            <!-- PROGRESS / ACTIVITY -->
+
+            <div class="dashboard-two-column">
+
+
+                <div class="content-card">
+
+                    <h2>
+                        Progress to Next Level
+                    </h2>
+
+                    <p class="muted-text">
+                        <span id="pointsRemaining">
+                            190
+                        </span>
+                        points remaining to reach 300 points.
+                    </p>
+
+
+                    <div class="percentage">
+
+                        <span id="progressPercentage">
+                            36.7
+                        </span>%
+
+                    </div>
+
+
+                    <div class="progress-track">
+
+                        <div
+                            id="dashboardProgress"
+                            class="progress-value"
+                            style="width:36.7%"
+                        ></div>
+
+                    </div>
+
+
+                    <div class="progress-bottom">
+
+                        <span>
+                            <span id="progressPoints">
+                                110
+                            </span>
+                            points earned
+                        </span>
+
+                        <span>
+                            300 point target
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="content-card">
+
+                    <h2>
+                        Recent Activity
+                    </h2>
+
+
+                    <div class="activity-list">
+
+
+                        <div class="activity">
+
+                            <div class="activity-status approved">
+                                ✓
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Refer a Student
+                                </strong>
+
+                                <span>
+                                    Approved · 80 points awarded
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="activity">
+
+                            <div class="activity-status approved">
+                                ✓
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Distribute Talerang Material
+                                </strong>
+
+                                <span>
+                                    Approved · 30 points awarded
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="activity">
+
+                            <div class="activity-status pending">
+                                ◷
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Social Media Post
+                                </strong>
+
+                                <span>
+                                    Awaiting submission
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- LEADERSHIP -->
+
+            <div class="content-card">
+
+                <div class="card-title-row">
+
+                    <div>
+
+                        <h2>
+                            Leadership Progression
+                        </h2>
+
+                        <p>
+                            Your position changes as you reach each approved point target.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="leadership-grid">
+
+
+                    <div class="leadership-level current">
+
+                        <span>
+                            CURRENT
+                        </span>
+
+                        <h3>
+                            Campus Ambassador
+                        </h3>
+
+                        <p>
+                            Starting Level
+                        </p>
+
+                    </div>
+
+
+                    <div class="leadership-arrow">
+                        →
+                    </div>
+
+
+                    <div class="leadership-level">
+
+                        <span>
+                            300 POINTS
+                        </span>
+
+                        <h3>
+                            Chapter President
+                        </h3>
+
+                        <p>
+                            Next Leadership Level
+                        </p>
+
+                    </div>
+
+
+                    <div class="leadership-arrow">
+                        →
+                    </div>
+
+
+                    <div class="leadership-level">
+
+                        <span>
+                            600 POINTS
+                        </span>
+
+                        <h3>
+                            City Chapter President
+                        </h3>
+
+                        <p>
+                            Future Leadership Level
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+        <!-- =================================================
+             TASKS
+        ================================================= -->
+
+        <section
+            id="tasks"
+            class="portal-section"
+        >
+
+            <div class="page-heading">
+
+                <span class="section-label">
+                    YOUR ACTIVITIES
+                </span>
+
+                <h1>
+                    Tasks
+                </h1>
+
+                <p>
+                    Complete activities and earn approved points.
+                </p>
+
+            </div>
+
+
+            <div class="task-grid">
+
+
+                <div class="task-card">
+
+                    <span>01</span>
+
+                    <h3>
+                        Refer a Student
+                    </h3>
+
+                    <p>
+                        Refer a student who successfully joins Talerang.
+                    </p>
+
+                    <div class="task-footer">
+
+                        <strong>
+                            80 pts
+                        </strong>
+
+                        <button
+                            class="task-button"
+                            data-task="Refer a Student"
+                            data-points="80"
+                        >
+                            Complete
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="task-card">
+
+                    <span>02</span>
+
+                    <h3>
+                        Host a Workshop
+                    </h3>
+
+                    <p>
+                        Organize and successfully conduct a campus workshop.
+                    </p>
+
+                    <div class="task-footer">
+
+                        <strong>
+                            100 pts
+                        </strong>
+
+                        <button
+                            class="task-button"
+                            data-task="Host a Workshop"
+                            data-points="100"
+                        >
+                            Complete
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="task-card">
+
+                    <span>03</span>
+
+                    <h3>
+                        Distribute Talerang Material
+                    </h3>
+
+                    <p>
+                        Distribute approved Talerang material to students.
+                    </p>
+
+                    <div class="task-footer">
+
+                        <strong>
+                            30 pts
+                        </strong>
+
+                        <button
+                            class="task-button"
+                            data-task="Distribute Talerang Material"
+                            data-points="30"
+                        >
+                            Complete
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="task-card">
+
+                    <span>04</span>
+
+                    <h3>
+                        Social Media Post
+                    </h3>
+
+                    <p>
+                        Publish an approved Talerang-tagged social media post.
+                    </p>
+
+                    <div class="task-footer">
+
+                        <strong>
+                            50 pts
+                        </strong>
+
+                        <button
+                            class="task-button"
+                            data-task="Social Media Post"
+                            data-points="50"
+                        >
+                            Complete
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="task-card">
+
+                    <span>05</span>
+
+                    <h3>
+                        Weekly Team Call
+                    </h3>
+
+                    <p>
+                        Attend the weekly Campus Ambassador team call.
+                    </p>
+
+                    <div class="task-footer">
+
+                        <strong>
+                            10 pts / call
+                        </strong>
+
+                        <button
+                            class="task-button"
+                            data-task="Weekly Team Call"
+                            data-points="10"
+                        >
+                            Complete
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             RANKINGS
+        ================================================= -->
+
+        <section
+            id="rankings"
+            class="portal-section"
+        >
+
+            <div class="page-heading">
+
+                <span class="section-label">
+                    CAMPUS AMBASSADORS
+                </span>
+
+                <h1>
+                    Rankings
+                </h1>
+
+                <p>
+                    See your position among other ambassadors.
+                </p>
+
+            </div>
+
+
+            <div class="ranking-summary">
+
+                <div>
+                    <span>Your Rank</span>
+                    <strong>
+                        #<span id="rankingPosition">12</span>
+                    </strong>
+                </div>
+
+                <div>
+                    <span>Your Points</span>
+                    <strong>
+                        <span id="rankingPoints">110</span>
+                    </strong>
+                </div>
+
+                <div>
+                    <span>Your Position</span>
+                    <strong id="rankingUserPosition">
+                        Campus Ambassador
+                    </strong>
+                </div>
+
+            </div>
+
+
+            <div class="content-card table-container">
+
+                <table class="ranking-table">
+
+                    <thead>
+
+                        <tr>
+                            <th>Rank</th>
+                            <th>Ambassador</th>
+                            <th>College</th>
+                            <th>Points</th>
+                            <th>Position</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td>1</td>
+                            <td>Rahul Sharma</td>
+                            <td>Delhi University</td>
+                            <td>460</td>
+                            <td>Chapter President</td>
+                        </tr>
+
+                        <tr>
+                            <td>2</td>
+                            <td>Priya Singh</td>
+                            <td>Amity University</td>
+                            <td>420</td>
+                            <td>Chapter President</td>
+                        </tr>
+
+                        <tr>
+                            <td>3</td>
+                            <td>Riya Verma</td>
+                            <td>DU</td>
+                            <td>350</td>
+                            <td>Chapter President</td>
+                        </tr>
+
+                        <tr class="my-row">
+
+                            <td>
+                                #12
+                            </td>
+
+                            <td id="rankingName">
+                                Avni Agarwal
+                            </td>
+
+                            <td id="rankingCollege">
+                                Your College
+                            </td>
+
+                            <td>
+                                110
+                            </td>
+
+                            <td>
+                                Campus Ambassador
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             ANNOUNCEMENTS
+        ================================================= -->
+
+        <section
+            id="announcements"
+            class="portal-section"
+        >
+
+            <div class="page-heading">
+
+                <span class="section-label">
+                    STAY UPDATED
+                </span>
+
+                <h1>
+                    Announcements
+                </h1>
+
+                <p>
+                    Important updates and communication from Talerang.
+                </p>
+
+            </div>
+
+
+            <div class="announcement-card">
+
+                <div class="announcement-top">
+
+                    <div class="announcement-mark">
+                        !
+                    </div>
+
+                    <div>
+
+                        <span>
+                            LATEST ANNOUNCEMENT
+                        </span>
+
+                        <h2>
+                            Weekly Ambassador Session
+                        </h2>
+
+                        <p>
+                            Weekly Campus Ambassador update
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="announcement-body">
+
+                    <p>
+                        Join the weekly Talerang Campus Ambassador
+                        session to stay updated about activities,
+                        upcoming opportunities, points and
+                        leadership progression.
+                    </p>
+
+
+                    <div class="announcement-meta">
+
+                        <div>
+                            <strong>
+                                10 pts
+                            </strong>
+
+                            <span>
+                                Call attendance
+                            </span>
+                        </div>
+
+
+                        <div>
+                            <strong>
+                                Weekly
+                            </strong>
+
+                            <span>
+                                Team session
+                            </span>
+                        </div>
+
+                    </div>
+
+
+                    <a
+                        id="whatsappAnnouncement"
+                        href="https://chat.whatsapp.com/"
+                        target="_blank"
+                        class="whatsapp-btn"
+                    >
+                        Join WhatsApp Session →
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             PROFILE
+        ================================================= -->
+
+        <section
+            id="profile"
+            class="portal-section"
+        >
+
+            <div class="page-heading">
+
+                <span class="section-label">
+                    YOUR ACCOUNT
+                </span>
+
+                <h1>
+                    Profile
+                </h1>
+
+                <p>
+                    Your Campus Ambassador information.
+                </p>
+
+            </div>
+
+
+            <!-- PROFILE HEADER -->
+
+            <div class="profile-header">
+
+                <div
+                    class="profile-large-avatar"
+                    id="profileAvatar"
+                >
+                    A
+                </div>
+
+
+                <div class="profile-header-info">
+
+                    <span>
+                        CAMPUS AMBASSADOR
+                    </span>
+
+                    <h2 id="profileName">
+                        Avni Agarwal
+                    </h2>
+
+                    <p id="profileCollege">
+                        Your College
+                    </p>
+
+                </div>
+
+
+                <div class="profile-score">
+
+                    <strong id="profilePoints">
+                        110
+                    </strong>
+
+                    <span>
+                        approved points
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="profile-grid">
+
+
+                <div class="content-card">
+
+                    <h2>
+                        Personal Information
+                    </h2>
+
+
+                    <div class="profile-row">
+
+                        <span>
+                            Full Name
+                        </span>
+
+                        <strong id="profileFullName">
+                            Avni Agarwal
+                        </strong>
+
+                    </div>
+
+
+                    <div class="profile-row">
+
+                        <span>
+                            Email
+                        </span>
+
+                        <strong id="profileEmail">
+                            example@email.com
+                        </strong>
+
+                    </div>
+
+
+                    <div class="profile-row">
+
+                        <span>
+                            Mobile
+                        </span>
+
+                        <strong id="profileMobile">
+                            +91 XXXXX XXXXX
+                        </strong>
+
+                    </div>
+
+
+                    <div class="profile-row">
+
+                        <span>
+                            College
+                        </span>
+
+                        <strong id="profileCollegeDetail">
+                            Your College
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="content-card">
+
+                    <h2>
+                        Ambassador Information
+                    </h2>
+
+
+                    <div class="profile-row">
+
+                        <span>
+                            Current Position
+                        </span>
+
+                        <strong id="profileCurrentPosition">
+                            Campus Ambassador
+                        </strong>
+
+                    </div>
+
+
+                    <div class="profile-row">
+
+                        <span>
+                            Current Rank
+                        </span>
+
+                        <strong>
+                            #<span id="profileRank">
+                                12
+                            </span>
+                        </strong>
+
+                    </div>
+
+
+                    <div class="profile-row">
+
+                        <span>
+                            LinkedIn
+                        </span>
+
+                        <a
+                            id="profileLinkedin"
+                            href="#"
+                            target="_blank"
+                        >
+                            View Profile →
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <button
+                id="editProfileBtn"
+                class="dark-btn profile-edit"
+            >
+                Edit Profile
+            </button>
+
+
+            <form
+                id="editProfileForm"
+                class="edit-profile-form hidden"
+            >
+
+                <h2>
+                    Edit Profile
+                </h2>
+
+
+                <label>Full Name</label>
+
+                <input
+                    id="editFullName"
+                    type="text"
+                >
+
+
+                <label>Mobile</label>
+
+                <input
+                    id="editMobile"
+                    type="tel"
+                >
+
+
+                <label>College</label>
+
+                <input
+                    id="editCollege"
+                    type="text"
+                >
+
+
+                <label>LinkedIn</label>
+
+                <input
+                    id="editLinkedin"
+                    type="url"
+                >
+
+
+                <div class="edit-buttons">
+
+                    <button
+                        type="submit"
+                        class="dark-btn"
+                    >
+                        Save Changes
+                    </button>
+
+                    <button
+                        type="button"
+                        id="cancelProfileBtn"
+                        class="cancel-btn"
+                    >
+                        Cancel
+                    </button>
+
+                </div>
+
+            </form>
+
+
+        </section>
+
+
+    </main>
+
+</div>
+
+
+<!-- TOAST -->
+
+<div id="toast" class="toast">
+
+    <span id="toastMessage"></span>
+
+</div>
+
+
+<script src="script.js"></script>
+
+</body>
+
+</html>

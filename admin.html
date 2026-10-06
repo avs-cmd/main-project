@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Talerang Admin Portal</title>
+
+    <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+
+<!-- =====================================================
+     ADMIN AUTH
+===================================================== -->
+
+<div id="adminAuth" class="admin-auth">
+
+    <div class="auth-brand">
+        <img src="talerang-logo.png" alt="Talerang">
+        <span>ADMIN PORTAL</span>
+    </div>
+
+    <div class="auth-card">
+
+        <div class="auth-heading">
+            <span class="small-label">TALERANG</span>
+
+            <h1 id="authHeading">
+                Welcome back
+            </h1>
+
+            <p id="authSubtitle">
+                Sign in to manage the Campus Ambassador program.
+            </p>
+        </div>
+
+
+        <!-- AUTH TABS -->
+
+        <div class="auth-tabs">
+
+            <button
+                id="loginTab"
+                class="auth-tab active"
+            >
+                Login
+            </button>
+
+            <button
+                id="signupTab"
+                class="auth-tab"
+            >
+                Sign Up
+            </button>
+
+        </div>
+
+
+        <!-- LOGIN -->
+
+        <form id="adminLoginForm">
+
+            <div class="input-group">
+
+                <label>Email</label>
+
+                <input
+                    type="email"
+                    id="adminLoginEmail"
+                    placeholder="admin@talerang.com"
+                    required
+                >
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>Password</label>
+
+                <input
+                    type="password"
+                    id="adminLoginPassword"
+                    placeholder="Enter password"
+                    required
+                >
+
+            </div>
+
+
+            <button class="auth-button" type="submit">
+                Login to Admin Portal
+            </button>
+
+        </form>
+
+
+        <!-- SIGN UP -->
+
+        <form
+            id="adminSignupForm"
+            class="hidden"
+        >
+
+            <div class="input-group">
+
+                <label>Full Name</label>
+
+                <input
+                    type="text"
+                    id="adminSignupName"
+                    placeholder="Admin name"
+                >
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>Admin Email</label>
+
+                <input
+                    type="email"
+                    id="adminSignupEmail"
+                    placeholder="admin@talerang.com"
+                >
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>Password</label>
+
+                <input
+                    type="password"
+                    id="adminSignupPassword"
+                    placeholder="Create password"
+                >
+
+            </div>
+
+
+            <button class="auth-button" type="submit">
+                Create Admin Account
+            </button>
+
+        </form>
+
+
+        <p id="authMessage" class="auth-message"></p>
+
+        <div class="auth-security">
+            Authorized Talerang administrators only.
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     ADMIN PORTAL
+===================================================== -->
+
+<div id="adminPortal" class="admin-portal hidden">
+
+
+    <!-- =================================================
+         SIDEBAR
+    ================================================== -->
+
+    <aside class="admin-sidebar">
+
+        <div class="brand-area">
+
+            <img
+                src="talerang-logo.png"
+                alt="Talerang"
+            >
+
+            <div>
+                <strong>ADMIN</strong>
+                <span>Campus Ambassador</span>
+            </div>
+
+        </div>
+
+
+        <nav class="admin-nav">
+
+            <button
+                class="admin-nav-item active"
+                data-page="dashboard"
+            >
+                <span class="nav-icon">⌂</span>
+                <span>Dashboard</span>
+            </button>
+
+
+            <button
+                class="admin-nav-item"
+                data-page="students"
+            >
+                <span class="nav-icon">◎</span>
+                <span>Student Information</span>
+            </button>
+
+
+            <button
+                class="admin-nav-item"
+                data-page="tasks"
+            >
+                <span class="nav-icon">✓</span>
+                <span>Student Tasks</span>
+            </button>
+
+
+            <button
+                class="admin-nav-item"
+                data-page="rankings"
+            >
+                <span class="nav-icon">♛</span>
+                <span>Rankings</span>
+            </button>
+
+
+            <button
+                class="admin-nav-item"
+                data-page="announcements"
+            >
+                <span class="nav-icon">!</span>
+                <span>Announcements</span>
+            </button>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <div class="admin-user">
+
+                <div class="admin-avatar">
+                    A
+                </div>
+
+                <div>
+                    <strong>Administrator</strong>
+                    <span>Admin</span>
+                </div>
+
+            </div>
+
+
+            <button
+                id="logoutBtn"
+                class="logout-button"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =================================================
+         MAIN
+    ================================================== -->
+
+    <main class="admin-main">
+
+
+        <!-- TOP BAR -->
+
+        <header class="topbar">
+
+            <div>
+
+                <span class="topbar-label">
+                    TALERANG ADMIN
+                </span>
+
+                <h2 id="pageTitle">
+                    Dashboard
+                </h2>
+
+            </div>
+
+
+            <div class="topbar-right">
+
+                <div class="topbar-user">
+
+                    <span>Welcome back</span>
+
+                    <strong>
+                        Administrator
+                    </strong>
+
+                </div>
+
+                <div class="top-avatar">
+                    A
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             DASHBOARD
+        ================================================== -->
+
+        <section
+            id="dashboardPage"
+            class="admin-page active"
+        >
+
+            <div class="page-intro">
+
+                <div>
+
+                    <span class="section-label">
+                        PROGRAM OVERVIEW
+                    </span>
+
+                    <h1>Dashboard</h1>
+
+                    <p>
+                        Monitor the Campus Ambassador program,
+                        student performance and leadership growth.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- STATS -->
+
+            <div class="stats-grid">
+
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <div class="stat-icon blue">
+                            ◎
+                        </div>
+
+                        <span>
+                            STUDENTS
+                        </span>
+
+                    </div>
+
+                    <strong id="totalStudents">
+                        0
+                    </strong>
+
+                    <p>
+                        Registered ambassadors
+                    </p>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <div class="stat-icon red">
+                            ✓
+                        </div>
+
+                        <span>
+                            ACTIVITIES
+                        </span>
+
+                    </div>
+
+                    <strong id="totalActivities">
+                        0
+                    </strong>
+
+                    <p>
+                        Activities completed
+                    </p>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <div class="stat-icon gold">
+                            ♛
+                        </div>
+
+                        <span>
+                            LEADERS
+                        </span>
+
+                    </div>
+
+                    <strong id="chapterPresidents">
+                        0
+                    </strong>
+
+                    <p>
+                        Chapter Presidents
+                    </p>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <div class="stat-icon green">
+                            ★
+                        </div>
+
+                        <span>
+                            POINTS
+                        </span>
+
+                    </div>
+
+                    <strong id="totalPoints">
+                        0
+                    </strong>
+
+                    <p>
+                        Earned across program
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- DASHBOARD LOWER -->
+
+            <div class="dashboard-grid">
+
+
+                <!-- TOP STUDENTS -->
+
+                <div class="content-card">
+
+                    <div class="card-header">
+
+                        <div>
+                            <h3>Top Ambassadors</h3>
+
+                            <p>
+                                Highest performing students
+                            </p>
+                        </div>
+
+                        <button
+                            class="link-button"
+                            data-open="rankings"
+                        >
+                            View all
+                        </button>
+
+                    </div>
+
+
+                    <div id="topStudents">
+                    </div>
+
+                </div>
+
+
+                <!-- PROGRAM PROGRESS -->
+
+                <div class="content-card">
+
+                    <div class="card-header">
+
+                        <div>
+                            <h3>Leadership Progress</h3>
+
+                            <p>
+                                Students reaching the next level
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="leadership-box">
+
+                        <div class="leadership-number">
+                            <strong id="presidentPercentage">
+                                0%
+                            </strong>
+
+                            <span>
+                                Chapter Presidents
+                            </span>
+                        </div>
+
+
+                        <div class="big-progress">
+
+                            <div
+                                id="presidentProgress"
+                                class="big-progress-fill"
+                            ></div>
+
+                        </div>
+
+
+                        <div class="progress-labels">
+
+                            <span>
+                                Campus Ambassador
+                            </span>
+
+                            <span>
+                                300 points
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- RECENT ACTIVITY -->
+
+            <div class="content-card">
+
+                <div class="card-header">
+
+                    <div>
+                        <h3>Recent Activity</h3>
+
+                        <p>
+                            Latest student submissions
+                        </p>
+                    </div>
+
+                </div>
+
+                <div id="recentActivity">
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             STUDENTS
+        ================================================== -->
+
+        <section
+            id="studentsPage"
+            class="admin-page"
+        >
+
+            <div class="page-intro">
+
+                <div>
+
+                    <span class="section-label">
+                        STUDENT MANAGEMENT
+                    </span>
+
+                    <h1>Student Information</h1>
+
+                    <p>
+                        View profiles, positions, points and
+                        professional information.
+                    </p>
+
+                </div>
+
+
+                <input
+                    id="studentSearch"
+                    class="search-box"
+                    type="text"
+                    placeholder="Search student..."
+                >
+
+            </div>
+
+
+            <div class="content-card table-card">
+
+                <div class="table-container">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>Student</th>
+                                <th>College</th>
+                                <th>Position</th>
+                                <th>Points</th>
+                                <th>Rank</th>
+                                <th>LinkedIn</th>
+                                <th></th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="studentsTable">
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             TASKS
+        ================================================== -->
+
+        <section
+            id="tasksPage"
+            class="admin-page"
+        >
+
+            <div class="page-intro">
+
+                <div>
+
+                    <span class="section-label">
+                        ACTIVITY MANAGEMENT
+                    </span>
+
+                    <h1>Student Tasks</h1>
+
+                    <p>
+                        Review student activities and approve
+                        points earned.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- TASK SUMMARY -->
+
+            <div class="task-summary">
+
+                <div>
+                    <span>Pending</span>
+                    <strong id="pendingTasks">0</strong>
+                </div>
+
+                <div>
+                    <span>Approved</span>
+                    <strong id="approvedTasks">0</strong>
+                </div>
+
+                <div>
+                    <span>Rejected</span>
+                    <strong id="rejectedTasks">0</strong>
+                </div>
+
+            </div>
+
+
+            <div class="content-card table-card">
+
+                <div class="table-container">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>Student</th>
+                                <th>Activity</th>
+                                <th>Points</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Action</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="tasksTable">
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             RANKINGS
+        ================================================== -->
+
+        <section
+            id="rankingsPage"
+            class="admin-page"
+        >
+
+            <div class="page-intro">
+
+                <div>
+
+                    <span class="section-label">
+                        PERFORMANCE
+                    </span>
+
+                    <h1>Rankings</h1>
+
+                    <p>
+                        Overall Campus Ambassador ranking.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="content-card table-card">
+
+                <div class="table-container">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>Rank</th>
+                                <th>Student</th>
+                                <th>College</th>
+                                <th>Position</th>
+                                <th>Points</th>
+                                <th>Progress</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="rankingTable">
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             ANNOUNCEMENTS
+        ================================================== -->
+
+        <section
+            id="announcementsPage"
+            class="admin-page"
+        >
+
+            <div class="page-intro">
+
+                <div>
+
+                    <span class="section-label">
+                        COMMUNICATION
+                    </span>
+
+                    <h1>Announcements</h1>
+
+                    <p>
+                        Publish important updates for Campus
+                        Ambassadors.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="announcement-grid">
+
+
+                <!-- CREATE -->
+
+                <div class="content-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h3>Create Announcement</h3>
+
+                            <p>
+                                This will be visible to students.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <form id="announcementForm">
+
+                        <div class="input-group">
+
+                            <label>
+                                Announcement Title
+                            </label>
+
+                            <input
+                                id="announcementTitle"
+                                type="text"
+                                placeholder="Weekly Team Call"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label>
+                                Description
+                            </label>
+
+                            <textarea
+                                id="announcementDescription"
+                                placeholder="Write your announcement..."
+                                required
+                            ></textarea>
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label>
+                                WhatsApp Link
+                            </label>
+
+                            <input
+                                id="announcementWhatsapp"
+                                type="url"
+                                placeholder="https://chat.whatsapp.com/..."
+                            >
+
+                        </div>
+
+
+                        <button
+                            class="primary-button"
+                            type="submit"
+                        >
+                            Publish Announcement
+                        </button>
+
+                    </form>
+
+                </div>
+
+
+                <!-- PREVIEW -->
+
+                <div class="content-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h3>Student View</h3>
+
+                            <p>
+                                Preview of the current announcement.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="announcementPreview"
+                        class="announcement-preview"
+                    >
+
+                        <span class="announcement-tag">
+                            ANNOUNCEMENT
+                        </span>
+
+                        <h3>
+                            No announcement yet
+                        </h3>
+
+                        <p>
+                            Create an announcement to display
+                            it here.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script src="admin.js"></script>
+
+</body>
+</html>

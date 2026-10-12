@@ -1281,84 +1281,130 @@ button {
 
 
 /* =====================================================
-   TASKS
+   TASKS — CLEANER TYPE, CONSISTENT CARDS AND ACTIONS
 ===================================================== */
-
 .task-grid {
     display: grid;
-
-    grid-template-columns: repeat(2,1fr);
-
-    gap: 17px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    align-items: stretch;
 }
 
 .task-card {
-    background: white;
-
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    background: #fff;
     border: 1px solid var(--border);
-
-    border-radius: 14px;
-
-    padding: 25px;
+    border-radius: 15px;
+    padding: 24px;
+    transition: border-color .18s ease, transform .18s ease;
 }
-
+.task-card:hover {
+    border-color: #c7c7dc;
+    transform: translateY(-2px);
+}
 .task-card > span {
     color: var(--red);
-
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 700;
-
-    letter-spacing: 1px;
+    letter-spacing: 1.2px;
 }
-
 .task-card h3 {
-    font-size: 17px;
-
-    margin: 12px 0 7px;
+    color: var(--blue);
+    font-size: 18px;
+    font-weight: 650;
+    line-height: 1.35;
+    letter-spacing: -.2px;
+    margin: 11px 0 8px;
 }
-
 .task-card p {
-    color: var(--muted);
-
-    font-size: 12px;
-    line-height: 1.6;
-
-    min-height: 40px;
+    color: #686879;
+    font-size: 13px;
+    line-height: 1.75;
+    min-height: 46px;
+    margin-bottom: 4px;
 }
-
 .task-footer {
     display: flex;
-
     justify-content: space-between;
     align-items: center;
-
+    flex-wrap: wrap;
+    gap: 12px;
     border-top: 1px solid var(--border);
-
-    margin-top: 18px;
-    padding-top: 15px;
+    margin-top: auto;
+    padding-top: 17px;
 }
-
 .task-footer strong {
     color: var(--red);
-    font-size: 13px;
+    font-size: 14px;
+    font-weight: 700;
 }
-
 .task-button {
-    border: none;
-
+    border: 0;
     background: var(--blue);
-    color: white;
-
-    padding: 9px 14px;
-
-    border-radius: 6px;
-
-    font-size: 10px;
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 7px;
+    font-size: 12px;
     font-weight: 600;
+    line-height: 1.3;
+    transition: background .18s ease, opacity .18s ease;
+}
+.task-button:hover { background: var(--red); }
+.task-button:disabled { opacity: .55; cursor: not-allowed; }
+.brochures-task-card .brochures-badge {
+    display: inline-flex;
+    align-self: flex-start;
+    margin-bottom: 13px;
+    padding: 6px 9px;
+    border-radius: 6px;
+    background: #f5f5fa;
+    color: var(--blue);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .35px;
 }
 
-.task-button:hover {
-    background: var(--red);
+/* Reward callout below the task cards */
+.reward-info-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin-top: 22px;
+    padding: 24px 26px;
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    background: #fff;
+}
+.reward-info-card > div { min-width: 0; }
+.reward-info-card h2 {
+    color: var(--blue);
+    font-size: 20px;
+    font-weight: 650;
+    line-height: 1.4;
+    margin: 7px 0 8px;
+}
+.reward-info-card p {
+    max-width: 700px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.75;
+}
+.reward-info-card > strong {
+    flex: 0 0 auto;
+    padding: 12px 15px;
+    border-radius: 9px;
+    background: #f4f4f9;
+    color: var(--blue);
+    font-size: 12px;
+    letter-spacing: .25px;
+}
+@media (max-width: 650px) {
+    .reward-info-card { align-items: flex-start; flex-direction: column; padding: 20px; }
+    .reward-info-card > strong { white-space: normal; }
+    .task-card { padding: 20px; }
 }
 
 
@@ -1908,4 +1954,160 @@ button {
         text-align: left;
     }
 
+}
+
+/* =====================================================
+   REWARDS + ADMIN REWARDS
+===================================================== */
+.reward-overview-grid { display:grid; grid-template-columns:minmax(0,1.2fr) minmax(260px,.8fr); gap:18px; margin-bottom:30px; }
+.reward-threshold-card { background:linear-gradient(125deg,var(--blue),#393982); color:white; border-radius:16px; padding:26px; display:flex; align-items:center; justify-content:space-between; gap:18px; min-height:170px; }
+.reward-threshold-card h2 { font-size:28px; margin:8px 0; }
+.reward-threshold-card p { color:#e5e5f5; max-width:440px; font-size:12px; }
+.reward-value { width:82px; height:82px; border:1px solid #ffffff55; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:22px; font-weight:700; }
+.reward-value small { font-size:12px; margin-left:2px; }
+.section-label.light { color:#d8d8f0; }
+.reward-progress-panel,.admin-form-card { background:#fff; border:1px solid var(--border); border-radius:14px; padding:22px; }
+.reward-progress-heading { display:flex; justify-content:space-between; gap:12px; margin-bottom:14px; font-size:12px; }
+.reward-progress-heading span,.admin-help-text { color:var(--muted); font-size:11px; }
+.reward-progress-track { height:9px; border-radius:99px; background:#ececf4; overflow:hidden; margin-bottom:14px; }
+.reward-progress-bar { width:0; height:100%; border-radius:99px; background:var(--red); transition:width .25s ease; }
+.reward-progress-panel p,.reward-note { color:var(--muted); font-size:11px; }
+.reward-section-heading { display:flex; justify-content:space-between; align-items:end; margin:28px 0 14px; }
+.reward-section-heading h2 { font-size:20px; margin-top:4px; }
+.reward-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+.reward-card { background:white; border:1px solid var(--border); border-radius:14px; padding:22px; min-width:0; }
+.reward-icon { display:flex; align-items:center; justify-content:center; width:42px; height:42px; border-radius:12px; background:#f0f0fa; font-size:21px; margin-bottom:14px; }
+.reward-card h3 { font-size:16px; margin-bottom:7px; }
+.reward-card p { color:var(--muted); font-size:12px; min-height:36px; }
+.reward-card-meta { display:flex; align-items:center; justify-content:space-between; gap:10px; margin:16px 0; font-size:11px; }
+.reward-card-meta strong { color:var(--blue); }
+.reward-card-meta span { color:var(--muted); }
+.primary-btn { background:var(--blue); color:#fff; border:0; border-radius:7px; padding:11px 14px; font-weight:600; font-size:12px; }
+.primary-btn:disabled { opacity:.45; cursor:not-allowed; }
+.reward-request-btn { width:100%; }
+.reward-request-list,.admin-requests-list,.admin-catalogue-list { display:grid; gap:12px; }
+.request-row,.admin-request-row,.catalogue-row { border:1px solid var(--border); background:white; border-radius:11px; padding:16px; }
+.request-row { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; }
+.request-row-main { min-width:0; }
+.request-row-main>strong,.catalogue-row strong { display:block; font-size:13px; }
+.request-row-main>span,.catalogue-row span,.admin-request-top span { display:block; color:var(--muted); font-size:11px; margin-top:4px; }
+.request-row-main p { color:var(--muted); font-size:11px; margin-top:8px; }
+.status-pill { display:inline-flex; border-radius:99px; padding:5px 9px; font-size:10px; font-weight:700; white-space:nowrap; background:#f2f2f5; color:#666; }
+.status-pending { background:#fff3d7; color:#8b6100; }
+.status-approved { background:#e9efff; color:#222262; }
+.status-issued { background:#e4f6ec; color:#187044; }
+.status-rejected { background:#ffebeb; color:#a51f2b; }
+.issued-code { margin-top:12px; border:1px dashed #b7b7cc; background:#f8f8fc; border-radius:8px; padding:12px; }
+.issued-code span,.issued-code strong { display:block; overflow-wrap:anywhere; }
+.issued-code span { font-size:10px; color:var(--muted); margin-bottom:4px; }
+.issued-code strong { font-size:14px; letter-spacing:.3px; }
+.reward-note { margin-top:14px; }
+.admin-reward-summary { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; margin-bottom:18px; }
+.admin-summary-card { background:white; border:1px solid var(--border); border-radius:12px; padding:18px; }
+.admin-summary-card span { display:block; color:var(--muted); font-size:11px; }
+.admin-summary-card strong { display:block; color:var(--blue); font-size:26px; margin-top:5px; }
+.admin-reward-layout { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; margin-bottom:18px; }
+.admin-form-card h2 { font-size:18px; margin:7px 0 12px; }
+.admin-form-card label { display:block; font-size:11px; font-weight:600; margin:12px 0 6px; }
+.admin-form-card input,.admin-form-card textarea,.admin-form-card select { width:100%; border:1px solid var(--border); border-radius:7px; padding:10px 11px; background:#fff; color:var(--text); font:inherit; font-size:12px; }
+.admin-form-card form>.primary-btn { margin-top:14px; }
+.catalogue-row,.admin-request-top { display:flex; justify-content:space-between; align-items:center; gap:14px; }
+.small-outline-btn,.small-danger-btn { border:1px solid var(--border); background:white; color:var(--blue); border-radius:6px; padding:7px 10px; font-size:10px; font-weight:700; }
+.small-danger-btn { color:var(--red); border-color:#f0c7cb; }
+.admin-requests-card { margin-top:18px; }
+.admin-request-row>p { font-size:11px; color:var(--muted); margin:10px 0; }
+.admin-action-row { display:flex; gap:8px; margin-top:12px; }
+.issue-reward-form { margin-top:15px; padding-top:13px; border-top:1px solid var(--border); }
+.issue-reward-form .primary-btn { margin-top:12px; }
+.empty-state { border:1px dashed var(--border); border-radius:10px; padding:20px; text-align:center; color:var(--muted); font-size:12px; background:#fff; }
+@media(max-width:850px) { .reward-overview-grid,.admin-reward-layout { grid-template-columns:1fr; } }
+@media(max-width:650px) { .reward-grid,.admin-reward-summary { grid-template-columns:1fr; } .reward-threshold-card { align-items:flex-start; } .request-row { flex-direction:column; } .reward-value { width:66px;height:66px;font-size:17px; } }
+
+
+/* =====================================================
+   REFINED REWARDS STYLING — MATCHES THE EXISTING SOBER UI
+===================================================== */
+.reward-threshold-card {
+    background: #fff;
+    color: var(--text);
+    border: 1px solid var(--border);
+    box-shadow: none;
+}
+.reward-threshold-card p { color: var(--muted); }
+.reward-threshold-card .section-label.light { color: var(--muted); }
+.reward-value {
+    border: 1px solid var(--border);
+    color: var(--blue);
+    background: #f8f8fb;
+}
+.reward-progress-bar { background: var(--blue); }
+.reward-card, .request-row, .admin-request-row, .catalogue-row,
+.reward-progress-panel, .admin-form-card, .admin-summary-card {
+    box-shadow: none;
+}
+.reward-card { transition: border-color .18s ease; }
+.reward-card:hover { border-color: #c9c9dc; }
+.reward-icon { background: #f5f5f9; color: var(--blue); }
+.reward-card-meta strong { color: var(--blue); }
+.reward-section-heading { margin-top: 24px; }
+.reward-note { line-height: 1.6; }
+@media (max-width: 650px) {
+    .reward-overview-grid { gap: 12px; }
+    .reward-threshold-card { min-height: auto; padding: 20px; }
+}
+
+
+/* FINAL STUDENT PORTAL FIXES: ranking typography + task reward box */
+.ranking-summary > div {
+    min-height: 112px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+    padding: 22px 24px;
+}
+.ranking-summary span {
+    display: block;
+    color: var(--muted);
+    font-family: Inter, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.4;
+    font-weight: 500;
+}
+.ranking-summary strong {
+    display: block;
+    color: var(--blue);
+    font-family: Inter, Arial, sans-serif;
+    font-size: clamp(23px, 2vw, 30px);
+    line-height: 1.25;
+    letter-spacing: -0.4px;
+    font-weight: 700;
+    margin-top: 2px;
+    overflow-wrap: anywhere;
+}
+.ranking-summary strong small { font-size: 14px; font-weight: 600; }
+.reward-info-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin-top: 26px;
+    padding: 24px 28px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--red);
+    border-radius: 14px;
+    box-shadow: 0 5px 18px rgba(34,34,98,.045);
+}
+.reward-info-card .section-label { display: inline-block; margin-bottom: 8px; color: var(--red); font-size: 11px; font-weight: 700; letter-spacing: .08em; }
+.reward-info-card h2 { margin: 0 0 8px; color: var(--blue); font-family: Inter, Arial, sans-serif; font-size: 21px; line-height: 1.35; font-weight: 700; }
+.reward-info-card p { max-width: 650px; margin: 0; color: var(--muted); font-size: 13px; line-height: 1.7; }
+.reward-info-card > strong { flex: 0 0 auto; padding: 12px 16px; color: var(--blue); background: #f4f4fa; border-radius: 10px; font-size: 12px; letter-spacing: .03em; white-space: nowrap; }
+.reward-section-description { margin-top: 8px; max-width: 720px; color: var(--muted); font-size: 12px; line-height: 1.65; }
+.reward-card p { line-height: 1.65; }
+.reward-card:has(.reward-request-btn:disabled) .reward-request-btn { cursor: not-allowed; opacity: .7; }
+@media (max-width: 700px) {
+  .ranking-summary { grid-template-columns: 1fr; }
+  .reward-info-card { align-items: flex-start; flex-direction: column; padding: 20px; }
+  .reward-info-card > strong { white-space: normal; }
 }

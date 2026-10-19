@@ -8,4 +8,3 @@ pwdlib[argon2]
 email-validator
 pwdlib[argon2,bcrypt]
 python-multipart
-Collecting python-multipart

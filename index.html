@@ -716,7 +716,7 @@
                     </strong>
 
                     <small>
-                        Next: Chapter President
+                        Next: Chapter Ambassador
                     </small>
 
                 </div>
@@ -743,6 +743,26 @@
 
             </div>
 
+            <!-- ACTIVITY TRACKER: each repeat activity has its own proof and caption -->
+            <div class="content-card activity-tracker-card">
+                <div class="card-title-row">
+                    <div>
+                        <h2>My Activity Tracker</h2>
+                        <p>Upload a photo and add a short caption for each activity entry.</p>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table class="activity-tracker-table">
+                        <thead>
+                            <tr><th>Activity</th><th>Points</th><th>Status</th><th>Photo proof</th><th>Caption</th><th>Action</th></tr>
+                        </thead>
+                        <tbody id="studentActivityTrackerRows">
+                            <tr><td colspan="6">Your activity entries will appear here.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="tracker-note">Save each photo and caption, then choose Submit to Google to send the activity to the Talerang Google Sheet and Drive folder. After submitting, check the Sheet to confirm the record arrived.</p>
+            </div>
 
             <!-- POSITION -->
 
@@ -759,8 +779,7 @@
                     </h2>
 
                     <p>
-                        Reach 1000 approved points to unlock the next level
-                        and reward redemption.
+                        Reach 3,000 points to become eligible for Chapter Ambassador promotion.
                     </p>
 
                 </div>
@@ -773,7 +792,7 @@
                     </strong>
 
                     <span>
-                        / 1000
+                        / 3000
                     </span>
 
                 </div>
@@ -800,7 +819,7 @@
                     </div>
 
                     <span class="target-pill">
-                        1000 Point Milestone
+                        3,000 Point Promotion Milestone
                     </span>
 
                 </div>
@@ -881,55 +900,6 @@
             <!-- PROGRESS / ACTIVITY -->
 
             <div class="dashboard-two-column">
-
-
-                <div class="content-card">
-
-                    <h2>
-                        Progress to Next Level
-                    </h2>
-
-                    <p class="muted-text">
-                        <span id="pointsRemaining">
-                            1000
-                        </span>
-                        points remaining to reach 1000 points.
-                    </p>
-
-
-                    <div class="percentage">
-
-                        <span id="progressPercentage">
-                            36.7
-                        </span>%
-
-                    </div>
-
-
-                    <div class="progress-track">
-
-                        <div id="dashboardProgress" class="progress-value" style="width:36.7%"></div>
-
-                    </div>
-
-
-                    <div class="progress-bottom">
-
-                        <span>
-                            <span id="progressPoints">
-                                110
-                            </span>
-                            points earned
-                        </span>
-
-                        <span>
-                            1000 point milestone
-                        </span>
-
-                    </div>
-
-                </div>
-
 
                 <div class="content-card">
 
@@ -1060,15 +1030,15 @@
                     <div class="leadership-level">
 
                         <span>
-                            300 POINTS
+                            3,000 POINTS
                         </span>
 
                         <h3>
-                            Chapter President
+                            Chapter Ambassador
                         </h3>
 
                         <p>
-                            Next Leadership Level
+                            Promotion eligibility
                         </p>
 
                     </div>
@@ -1082,15 +1052,15 @@
                     <div class="leadership-level">
 
                         <span>
-                            600 POINTS
+                            6,000 POINTS
                         </span>
 
                         <h3>
-                            City Chapter President
+                            Chapter President
                         </h3>
 
                         <p>
-                            Future Leadership Level
+                            Next leadership milestone
                         </p>
 
                     </div>
@@ -1175,7 +1145,7 @@
                 <div>
                     <span class="section-label">REWARDS</span>
                     <h2>Reach 1000 points to unlock rewards</h2>
-                    <p>Earn approved activity points to unlock rewards. At 1,000 approved points (₹1 per point), the ₹500 voucher becomes available to request. Your request must be approved by the Talerang admin before the reward is issued.</p>
+                    <p>1 point = ₹1 redemption value. Eligible rewards may include a ₹500 voucher, Spotify subscription, Netflix subscription and other vouchers, subject to Talerang reward rules.</p>
                 </div>
                 <strong>1000 PTS → REDEEM</strong>
             </div>
@@ -1206,16 +1176,16 @@
                 <div class="reward-progress-panel">
                     <div class="reward-progress-heading"><strong>Next milestone</strong><span><span id="rewardPointsRemaining">1000</span> points to go</span></div>
                     <div class="reward-progress-track"><div id="rewardProgressBar" class="reward-progress-bar"></div></div>
-                    <p>At 1,000 approved points (equal to ₹1,000 in point value), you can request eligible rewards such as the ₹500 voucher. Rewards stay locked until you reach their points requirement.</p>
+                    <p>Reward eligibility begins at 1,000 approved points. Each reward may have its own points requirement.</p>
                 </div>
             </div>
 
             <div class="reward-section-heading"><div><span class="section-label">CURRENT REWARDS</span><h2>Rewards available to request</h2></div></div>
             <div id="studentAvailableRewards" class="reward-grid"></div>
 
-            <div class="reward-section-heading"><div><span class="section-label">REWARD STATUS</span><h2>My reward requests &amp; rewards won</h2><p class="reward-section-description">Requests are pending until an admin approves them. Approved rewards appear here; issued codes or delivery details show when the admin marks them as issued.</p></div></div>
+            <div class="reward-section-heading"><div><span class="section-label">ADMIN REVIEW</span><h2>My reward requests</h2></div></div>
             <div id="studentRewardRequests" class="reward-request-list"></div>
-            <p class="reward-note">Admin approval is required before any reward is issued. A request marked Approved is not yet delivered; check here for the code or delivery details once it is marked Issued.</p>
+            <p class="reward-note">Every request is reviewed by the admin. Reward codes or delivery details appear here only after the admin issues the reward.</p>
         </section>
 
 
@@ -1336,57 +1306,15 @@
 
                     </thead>
 
-                    <tbody>
+                   
+<tbody id="rankingsTableBody">
 
-                        <tr>
-                            <td>1</td>
-                            <td>Rahul Sharma</td>
-                            <td>Delhi University</td>
-                            <td>460</td>
-                            <td>Chapter President</td>
-                        </tr>
+    <tr>
+        <td colspan="5">Loading rankings...</td>
+    </tr>
 
-                        <tr>
-                            <td>2</td>
-                            <td>Priya Singh</td>
-                            <td>Amity University</td>
-                            <td>420</td>
-                            <td>Chapter President</td>
-                        </tr>
+</tbody>
 
-                        <tr>
-                            <td>3</td>
-                            <td>Riya Verma</td>
-                            <td>DU</td>
-                            <td>350</td>
-                            <td>Chapter President</td>
-                        </tr>
-
-                        <tr class="my-row">
-
-                            <td>
-                                #12
-                            </td>
-
-                            <td id="rankingName">
-                                Avni Agarwal
-                            </td>
-
-                            <td id="rankingCollege">
-                                Your College
-                            </td>
-
-                            <td>
-                                110
-                            </td>
-
-                            <td>
-                                Campus Ambassador
-                            </td>
-
-                        </tr>
-
-                    </tbody>
 
                 </table>
 
@@ -1721,56 +1649,6 @@
 
 
         </section>
-
-        <!-- ADMIN REWARDS MANAGEMENT -->
-<section id="rewards" class="admin-section">
-    <div class="page-heading">
-        <span class="section-label">CAMPUS AMBASSADOR PROGRAM</span>
-        <h1>Rewards & Student Points</h1>
-        <p>Review student points, allocate brochures and manage reward requests.</p>
-    </div>
-
-    <div class="admin-reward-summary">
-        <article class="admin-summary-card">
-            <span>Total students</span>
-            <strong id="totalStudents">0</strong>
-        </article>
-        <article class="admin-summary-card">
-            <span>Eligible students</span>
-            <strong id="eligibleStudents">0</strong>
-        </article>
-        <article class="admin-summary-card">
-            <span>Pending requests</span>
-            <strong id="pendingRewards">0</strong>
-        </article>
-    </div>
-
-    <div class="admin-form-card">
-        <h2>Student points & brochure allocation</h2>
-        <p>Choose a student to update their approved points or record a brochure handover.</p>
-
-        <div class="admin-table-wrap">
-            <table class="student-rewards-table">
-                <thead>
-                    <tr>
-                        <th>Student</th>
-                        <th>Approved points</th>
-                        <th>Reward eligibility</th>
-                        <th>Brochures</th>
-                        <th>Manage</th>
-                    </tr>
-                </thead>
-                <tbody id="adminStudentRewards"></tbody>
-            </table>
-        </div>
-    </div>
-
-    <div class="admin-form-card">
-        <h2>Reward requests</h2>
-        <p>Approve or reject requests. Enter genuine voucher details when issuing a reward.</p>
-        <div id="adminRewardRequests"></div>
-    </div>
-</section>
 
 
     </main>

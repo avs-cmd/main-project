@@ -1,0 +1,144 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Talerang Admin Portal</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<div id="adminAuth" class="admin-auth">
+    <div class="auth-brand">
+        <img src="talerang-logo.png" alt="Talerang">
+        <span>ADMIN PORTAL</span>
+    </div>
+    <div class="auth-card">
+        <div class="auth-heading">
+            <span class="small-label">TALERANG</span>
+            <h1 id="authHeading">Welcome back</h1>
+            <p id="authSubtitle">Sign in to manage the Campus Ambassador program.</p>
+        </div>
+        <div class="auth-tabs">
+            <button id="loginTab" class="auth-tab active" type="button">Login</button>
+            <button id="signupTab" class="auth-tab" type="button">Sign Up</button>
+        </div>
+        <form id="adminLoginForm">
+            <div class="input-group"><label for="adminLoginEmail">Email</label><input type="email" id="adminLoginEmail" placeholder="admin@talerang.com" required=""></div>
+            <div class="input-group"><label for="adminLoginPassword">Password</label><input type="password" id="adminLoginPassword" placeholder="Enter password" required=""></div>
+            <button class="auth-button" type="submit">Login to Admin Portal</button>
+        </form>
+        <form id="adminSignupForm" class="hidden">
+            <div class="input-group"><label for="adminSignupName">Full Name</label><input type="text" id="adminSignupName" placeholder="Admin name"></div>
+            <div class="input-group"><label for="adminSignupEmail">Admin Email</label><input type="email" id="adminSignupEmail" placeholder="admin@talerang.com"></div>
+            <div class="input-group"><label for="adminSignupPassword">Password</label><input type="password" id="adminSignupPassword" placeholder="Create password"></div>
+            <button class="auth-button" type="submit">Create Admin Account</button>
+        </form>
+        <p id="authMessage" class="auth-message"></p>
+        <div class="auth-security">Authorized Talerang administrators only.</div>
+    </div>
+</div>
+
+<div id="adminPortal" class="admin-portal hidden">
+    <aside class="admin-sidebar">
+        <div class="brand-area">
+            <img src="talerang-logo.png" alt="Talerang">
+            <div><strong>ADMIN</strong><span>Campus Ambassador</span></div>
+        </div>
+        <nav class="admin-nav">
+            <button class="admin-nav-item active" data-page="dashboard"><span class="nav-icon">⌂</span><span>Dashboard</span></button>
+            <button class="admin-nav-item" data-page="students"><span class="nav-icon">◎</span><span>Student Information</span></button>
+            <button class="admin-nav-item" data-page="tasks"><span class="nav-icon">✓</span><span>Student Tasks</span></button>
+            <button class="admin-nav-item" data-page="rankings"><span class="nav-icon">♛</span><span>Rankings</span></button>
+            <button class="admin-nav-item" data-page="rewards"><span class="nav-icon">★</span><span>Rewards</span></button>
+            <button class="admin-nav-item" data-page="announcements"><span class="nav-icon">!</span><span>Announcements</span></button>
+        </nav>
+        <div class="sidebar-bottom">
+            <div class="admin-user"><div class="admin-avatar">A</div><div><strong>Administrator</strong><span>Admin</span></div></div>
+            <button id="logoutBtn" class="logout-button">Logout</button>
+        </div>
+    </aside>
+
+    <main class="admin-main">
+        <header class="topbar">
+            <div><span class="topbar-label">TALERANG ADMIN</span><h2 id="pageTitle">Dashboard</h2></div>
+            <div class="topbar-right"><div class="topbar-user"><span>Welcome back</span><strong>Administrator</strong></div><div class="top-avatar">A</div></div>
+        </header>
+
+        <section id="dashboardPage" class="admin-page active">
+            <div class="page-intro"><div><span class="section-label">PROGRAM OVERVIEW</span><h1>Dashboard</h1><p>Monitor the Campus Ambassador program, student performance and leadership growth.</p></div></div>
+            <div class="stats-grid">
+                <div class="stat-card"><div class="stat-top"><div class="stat-icon blue">◎</div><span>STUDENTS</span></div><strong id="totalStudents">0</strong><p>Registered ambassadors</p></div>
+                <div class="stat-card"><div class="stat-top"><div class="stat-icon red">✓</div><span>ACTIVITIES</span></div><strong id="totalActivities">0</strong><p>Activities completed</p></div>
+                <div class="stat-card"><div class="stat-top"><div class="stat-icon gold">♛</div><span>LEADERS</span></div><strong id="chapterPresidents">0</strong><p>Chapter Presidents</p></div>
+            </div>
+            <div class="dashboard-grid">
+                <div class="content-card"><div class="card-header"><div><h3>Top Ambassadors</h3><p>Highest performing students</p></div><button class="link-button" data-open="rankings">View all</button></div><div id="topStudents"></div></div>
+                <div class="content-card"><div class="card-header"><div><h3>Leadership Progress</h3><p>Students reaching the next level</p></div></div><div class="leadership-box"><div class="leadership-number"><strong id="presidentPercentage">0%</strong><span>Chapter Presidents</span></div><div class="big-progress"><div id="presidentProgress" class="big-progress-fill"></div></div><div class="progress-labels"><span>Campus Ambassador</span><span>300 points</span></div></div></div>
+            </div>
+            <div class="content-card"><div class="card-header"><div><h3>Recent Activity</h3><p>Latest student submissions</p></div></div><div id="recentActivity"></div></div>
+        </section>
+
+        <section id="studentsPage" class="admin-page">
+            <div class="page-intro"><div><span class="section-label">STUDENT MANAGEMENT</span><h1>Student Information</h1><p>View profiles, positions, points and professional information.</p></div><input id="studentSearch" class="search-box" type="text" placeholder="Search student..."></div>
+            <div class="content-card table-card"><div class="table-container"><table><thead><tr><th>Student</th><th>College</th><th>Position</th><th>Points</th><th>Rank</th><th>LinkedIn</th><th></th></tr></thead><tbody id="studentsTable"></tbody></table></div></div>
+        </section>
+
+        <section id="tasksPage" class="admin-page">
+            <div class="page-intro"><div><span class="section-label">ACTIVITY MANAGEMENT</span><h1>Student Tasks</h1><p>Review student activities and approve points earned.</p></div></div>
+            <div class="task-summary"><div><span>Pending</span><strong id="pendingTasks">0</strong></div><div><span>Approved</span><strong id="approvedTasks">0</strong></div><div><span>Rejected</span><strong id="rejectedTasks">0</strong></div></div>
+            <div class="content-card table-card"><div class="table-container"><table><thead><tr><th>Student</th><th>Activity</th><th>Points</th><th>Status</th><th>Date</th><th>Action</th></tr></thead><tbody id="tasksTable"></tbody></table></div></div>
+        </section>
+
+        <section id="rankingsPage" class="admin-page">
+            <div class="page-intro"><div><span class="section-label">PERFORMANCE</span><h1>Rankings</h1><p>Overall Campus Ambassador ranking.</p></div></div>
+            <div class="content-card table-card"><div class="table-container"><table><thead><tr><th>Rank</th><th>Student</th><th>College</th><th>Position</th><th>Points</th><th>Progress</th></tr></thead><tbody id="rankingTable"></tbody></table></div></div>
+        </section>
+
+        <section id="rewardsPage" class="admin-page">
+            <div class="page-intro"><div><span class="section-label">REWARDS &amp; RECOGNITION</span><h1>Rewards Management</h1><p>Track points, brochure allocation, reward requests and issued vouchers.</p></div></div>
+            <div class="stats-grid rewards-stats">
+                <div class="stat-card"><div class="stat-top"><div class="stat-icon blue">★</div><span>REWARD REQUESTS</span></div><strong id="rewardPendingCount">0</strong><p>Awaiting admin review</p></div>
+                <div class="stat-card"><div class="stat-top"><div class="stat-icon green">✓</div><span>APPROVED</span></div><strong id="rewardApprovedCount">0</strong><p>Requests approved</p></div>
+                <div class="stat-card"><div class="stat-top"><div class="stat-icon gold">▣</div><span>BROCHURES</span></div><strong id="brochureAllocatedCount">0</strong><p>Students allocated brochures</p></div>
+                <div class="stat-card"><div class="stat-top"><div class="stat-icon red">↗</div><span>VOUCHERS ISSUED</span></div><strong id="voucherIssuedCount">0</strong><p>Recorded reward vouchers</p></div>
+            </div>
+            <div class="content-card">
+                <div class="card-header"><div><h3>Brochure Inventory</h3><p>Add brochure name, unique code and total stock. Available stock decreases when assigned.</p></div></div>
+                <form id="brochureInventoryForm" class="brochure-inventory-form">
+                    <div class="input-group"><label for="brochureName">Brochure Name</label><input id="brochureName" type="text" placeholder="e.g. Campus Ambassador Introduction" required=""></div>
+                    <div class="input-group"><label for="brochureCode">Brochure Code</label><input id="brochureCode" type="text" placeholder="e.g. TAL-CA-001" required=""></div>
+                    <div class="input-group"><label for="brochureQuantity">Number of Brochures</label><input id="brochureQuantity" type="number" min="1" step="1" placeholder="e.g. 100" required=""></div>
+                    <button class="primary-button inventory-submit" type="submit">Add to Inventory</button>
+                </form>
+                <div class="table-container"><table class="rewards-table"><thead><tr><th>Brochure Name</th><th>Code</th><th>Total</th><th>Assigned</th><th>Available</th></tr></thead><tbody id="brochureInventoryTable"></tbody></table></div>
+            </div>
+            <div class="content-card">
+                <div class="card-header"><div><h3>Student Points &amp; Brochure Allocation</h3><p>Choose a brochure type and quantity. The same brochure code cannot be assigned twice to one student.</p></div></div>
+                <div class="table-container"><table class="rewards-table"><thead><tr><th>Student</th><th>Email</th><th>Points</th><th>Reward Eligibility</th><th>Assigned Brochures</th><th>Assign Brochure</th></tr></thead><tbody id="rewardStudentsTable"></tbody></table></div>
+            </div>
+            <div class="content-card">
+                <div class="card-header"><div><h3>Reward Requests</h3><p>Approve or reject submitted requests. Demo requests are shown below.</p></div></div>
+                <div class="table-container"><table class="rewards-table"><thead><tr><th>Student</th><th>Reward</th><th>Points Required</th><th>Status</th><th>Voucher Details</th><th>Action</th></tr></thead><tbody id="rewardRequestsTable"></tbody></table></div>
+            </div>
+            <div class="content-card">
+                <div class="card-header"><div><h3>Student Notifications</h3><p>Messages recorded for the selected student's portal demo.</p></div></div>
+                <div id="adminNotificationList" class="admin-notification-list"><p class="empty-state">No notifications yet.</p></div>
+            </div>
+        </section>
+
+        <section id="announcementsPage" class="admin-page">
+            <div class="page-intro"><div><span class="section-label">COMMUNICATION</span><h1>Announcements</h1><p>Publish important updates for Campus Ambassadors.</p></div></div>
+            <div class="announcement-grid">
+                <div class="content-card"><div class="card-header"><div><h3>Create Announcement</h3><p>This will be visible to students.</p></div></div><form id="announcementForm">
+                    <div class="input-group"><label for="announcementTitle">Announcement Title</label><input id="announcementTitle" type="text" placeholder="Weekly Team Call" required=""></div>
+                    <div class="input-group"><label for="announcementDescription">Description</label><textarea id="announcementDescription" placeholder="Write your announcement..." required=""></textarea></div>
+                    <div class="input-group"><label for="announcementWhatsapp">WhatsApp Link</label><input id="announcementWhatsapp" type="url" placeholder="https://chat.whatsapp.com/..."></div>
+                    <button class="primary-button" type="submit">Publish Announcement</button>
+                </form></div>
+                <div class="content-card"><div class="card-header"><div><h3>Student View</h3><p>Preview of the current announcement.</p></div></div><div id="announcementPreview" class="announcement-preview"><span class="announcement-tag">ANNOUNCEMENT</span><h3>No announcement yet</h3><p>Create an announcement to display it here.</p></div></div>
+            </div>
+        </section>
+    </main>
+</div>
+<script src="admin.js"></script>
+
+
+</body></html>

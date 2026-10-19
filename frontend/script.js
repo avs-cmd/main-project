@@ -4,8 +4,7 @@
 
 \===================================================== */
 
-const API_BASE_URL = "http://127.0.0.1:8000";
-
+const API_BASE_URL = "https://main-project-production-9a72.up.railway.app";
 const TOKEN_KEY = "talerangAccessToken";
 
 const POINT_TARGET = 1000;

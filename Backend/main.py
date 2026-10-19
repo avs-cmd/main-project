@@ -1,29 +1,22 @@
-
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from pathlib import Path
 
 from src.user.router import router as user_router
 from src.tasks.router import router as tasks_router
-from fastapi.staticfiles import StaticFiles
-from pathlib import Path
+
 
 app = FastAPI(
     title="Talerang Campus Ambassador API",
     version="1.0.0",
-
-)
-UPLOAD_DIR = Path(__file__).resolve().parent / "uploads"
-UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
-
-app.mount(
-    "/uploads",
-    StaticFiles(directory=str(UPLOAD_DIR)),
-    name="uploads"
 )
 
+# Allow the deployed frontend and local development servers
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
+        "https://avs-cmd.github.io",
         "http://127.0.0.1:5500",
         "http://localhost:5500",
         "http://127.0.0.1:5501",
@@ -34,6 +27,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Upload directory
+UPLOAD_DIR = Path(__file__).resolve().parent / "uploads"
+UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+
+app.mount(
+    "/uploads",
+    StaticFiles(directory=str(UPLOAD_DIR)),
+    name="uploads",
+)
+
+# Register routers
 app.include_router(user_router)
 app.include_router(tasks_router)
 

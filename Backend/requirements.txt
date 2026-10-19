@@ -9,3 +9,4 @@ email-validator
 pwdlib[argon2,bcrypt]
 python-multipart
 psycopg[binary]
+cloudinary

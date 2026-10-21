@@ -222,7 +222,9 @@ function updatePortal() {
     setText("rankingPoints", points);
 
     // Rank
-    const rank = Number(user.rank) || 12;
+   const rank = Number(user.rank) > 0
+    ? Number(user.rank)
+    : "—";
     setText("homeRank", rank);
     setText("dashboardRank", rank);
     setText("rankingPosition", rank);
@@ -266,6 +268,7 @@ function showPortal() {
     renderRepeatableTaskCards();
 
     updatePortal();
+    loadRankingsFromBackend();
 
     updateTaskCompletionCount();
 
@@ -949,14 +952,11 @@ window.scrollTo({
 
 
 
-/* Load live leaderboard when Rankings is opened */
+/* Refresh live rankings on Home and Rankings */
 
-if (page === "rankings") {
-
+if (page === "home" || page === "rankings") {
     loadRankingsFromBackend();
-
 }
-
 
 
 

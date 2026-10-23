@@ -8,7 +8,7 @@
 
 \\===================================================== */
 
-const API_BASE_URL = "https://talerang-campus-portal.onrender.com";
+const API_BASE_URL = "https://main-project-f0fd.onrender.com";
 
 const TOKEN_KEY = "talerangAccessToken";
 

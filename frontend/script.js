@@ -3146,39 +3146,21 @@ function updateTaskButtonStates() {
 
 
 
+
+
+
 const TASK_API_IDS = {
-
-
-
-    "Referral": 1,
-
-
-
-    "Team Call / Add Value": 2,
-
-
-
-    "Put Up Posters": 3,
-
-
-
-    "Brochures": 4,
-
-
-
+    "Referral": 2,
+    "Team Call / Add Value": 6,
+    "Put Up Posters": 1,
+    "Brochures": 3,
     "Workshop": 5,
-
-
-
-    "Social Media Post": 6,
-
-
-
+    "Social Media Post": 4,
     "Weekly Team Call": 7
-
-
-
 };
+
+
+
 
 // Load the logged-in student's saved submissions from FastAPI and merge them
 // into the existing tracker entries. PostgreSQL is authoritative for submitted rows.

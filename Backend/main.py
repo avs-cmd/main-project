@@ -5,14 +5,16 @@ from pathlib import Path
 
 from src.user.router import router as user_router
 from src.tasks.router import router as tasks_router
+from src.rewards.router import router as rewards_router
 
+# Ensure all ORM models are imported before create_tables.py is run.
+from src.rewards.models import RewardRequest  # noqa: F401
 
 app = FastAPI(
     title="Talerang Campus Ambassador API",
     version="1.0.0",
 )
 
-# Allow the deployed frontend and local development servers
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -27,7 +29,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Upload directory
 UPLOAD_DIR = Path(__file__).resolve().parent / "uploads"
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -37,16 +38,14 @@ app.mount(
     name="uploads",
 )
 
-# Register routers
 app.include_router(user_router)
 app.include_router(tasks_router)
+app.include_router(rewards_router)
 
 
 @app.get("/")
 def home():
-    return {
-        "message": "Talerang Campus Ambassador API is running"
-    }
+    return {"message": "Talerang Campus Ambassador API is running"}
 
 
 @app.get("/health")

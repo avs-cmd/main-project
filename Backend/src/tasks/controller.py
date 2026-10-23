@@ -60,6 +60,7 @@ def get_student_task_summary(db: Session, student_id: int):
         )
         .scalar()
     )
+    
 
     completed_tasks = (
         db.query(TaskSubmission)
@@ -69,8 +70,18 @@ def get_student_task_summary(db: Session, student_id: int):
         )
         .count()
     )
+    
 
     return {
         "total_points": int(total_points or 0),
         "completed_tasks": completed_tasks,
     }
+
+def get_student_task_submissions(db: Session, student_id: int):
+    """Return saved task submissions for the logged-in student."""
+    return (
+        db.query(TaskSubmission)
+        .filter(TaskSubmission.student_id == student_id)
+        .order_by(TaskSubmission.submitted_at.desc())
+        .all()
+    )

@@ -146,6 +146,35 @@ def get_my_task_summary(
 
 
 # =====================================================
+# CURRENT STUDENT'S SAVED ACTIVITY SUBMISSIONS
+# =====================================================
+
+@router.get("/submissions")
+def get_my_task_submissions(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    submissions = controller.get_student_task_submissions(
+        db=db,
+        student_id=current_user.id,
+    )
+
+    return [
+        {
+            "id": item.id,
+            "task_id": item.task_id,
+            "task_title": item.task.title,
+            "caption": item.caption,
+            "photo_url": item.photo_path,
+            "status": item.status,
+            "approved_points": item.approved_points,
+            "submitted_at": item.submitted_at,
+            "admin_remarks": item.admin_remarks,
+        }
+        for item in submissions
+    ]
+
+# =====================================================
 # SUBMIT ACTIVITY AND UPLOAD PHOTO TO CLOUDINARY
 # =====================================================
 

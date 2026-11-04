@@ -15,4 +15,10 @@ class User(Base):
     linkedin_url = Column(String(500), nullable=True)
     password = Column(String, nullable=False)
     role = Column(String, nullable=False, default="student")
+    designation = Column(
+    String(50),
+    nullable=False,
+    default="Campus Ambassador"
+)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+

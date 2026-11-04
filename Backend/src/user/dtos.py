@@ -27,6 +27,7 @@ class UserResponse(BaseModel):
     college: str
     linkedin_url: str | None = None
     role: str
+    designation: str
 
 
 class LoginResponse(BaseModel):

@@ -18,71 +18,81 @@ def get_student_points(db: Session, student_id: int) -> int:
         )
         .scalar()
     )
+
     return int(total or 0)
 
 
+# STUDENT: SUBMIT A REWARD REQUEST
 def create_request(db: Session, student: User, data):
+
     reward_name = data.reward_name.strip()
+
     if not reward_name:
-        raise HTTPException(status_code=422, detail="Reward name is required.")
-
-    # Prevent accidental duplicate requests for the same reward while one is
-    # awaiting a decision. A rejected request can be submitted again.
-    existing = (
-        db.query(RewardRequest)
-        .filter(
-            RewardRequest.student_id == student.id,
-            RewardRequest.reward_name == reward_name,
-            RewardRequest.status.in_(["pending", "approved"]),
-        )
-        .first()
-    )
-    if existing:
         raise HTTPException(
-            status_code=409,
-            detail="You already have an active request for this reward.",
+            status_code=422,
+            detail="Reward name is required."
         )
 
+    # Points are recorded for information only.
+    # They do NOT determine whether a student can request a reward.
     points = get_student_points(db, student.id)
-    if points < data.points_required:
-        raise HTTPException(
-            status_code=400,
-            detail=f"Not enough points for this reward. Current points: {points}.",
-        )
 
     item = RewardRequest(
         student_id=student.id,
         reward_name=reward_name,
-        points_required=data.points_required,
+        points_required=0,
         points_at_request=points,
         status="pending",
-        student_note=(data.student_note.strip() if data.student_note else None),
+        student_note=(
+            data.student_note.strip()
+            if data.student_note
+            else None
+        ),
     )
+
     db.add(item)
     db.commit()
     db.refresh(item)
+
     return item
 
 
+# STUDENT: VIEW OWN REWARD REQUESTS
 def list_student_requests(db: Session, student_id: int):
+
     return (
         db.query(RewardRequest)
         .filter(RewardRequest.student_id == student_id)
-        .order_by(RewardRequest.requested_at.desc(), RewardRequest.id.desc())
+        .order_by(
+            RewardRequest.requested_at.desc(),
+            RewardRequest.id.desc()
+        )
         .all()
     )
 
 
+# ADMIN: VIEW ALL REWARD REQUESTS
 def list_all_requests(db: Session):
+
     rows = (
-        db.query(RewardRequest, User.full_name, User.email)
+        db.query(
+            RewardRequest,
+            User.full_name,
+            User.email
+        )
         .join(User, User.id == RewardRequest.student_id)
-        .order_by(RewardRequest.requested_at.desc(), RewardRequest.id.desc())
+        .order_by(
+            RewardRequest.requested_at.desc(),
+            RewardRequest.id.desc()
+        )
         .all()
     )
+
     results = []
+
     for item, student_name, student_email in rows:
-        payload = {
+
+        results.append({
             "id": item.id,
             "student_id": item.student_id,
             "student_name": student_name,
@@ -95,25 +105,102 @@ def list_all_requests(db: Session):
             "admin_remarks": item.admin_remarks,
             "requested_at": item.requested_at,
             "reviewed_at": item.reviewed_at,
-        }
-        results.append(payload)
+            "voucher_code": item.voucher_code,
+            "issued_at": item.issued_at,
+        })
+
     return results
 
 
-def review_request(db: Session, request_id: int, status: str, admin_remarks: str | None):
-    item = db.query(RewardRequest).filter(RewardRequest.id == request_id).first()
-    if item is None:
-        raise HTTPException(status_code=404, detail="Reward request not found.")
+# ADMIN: APPROVE OR REJECT A REQUEST
+def review_request(
+    db: Session,
+    request_id: int,
+    status: str,
+    admin_remarks: str | None
+):
 
-    if item.status not in ("pending",):
+    item = (
+        db.query(RewardRequest)
+        .filter(RewardRequest.id == request_id)
+        .first()
+    )
+
+    if item is None:
         raise HTTPException(
-            status_code=409,
-            detail=f"Only pending requests can be reviewed. Current status: {item.status}.",
+            status_code=404,
+            detail="Reward request not found."
         )
 
-    item.status = status
-    item.admin_remarks = admin_remarks.strip() if admin_remarks else None
+    if item.status != "pending":
+        raise HTTPException(
+            status_code=409,
+            detail=f"This request has already been reviewed. Current status: {item.status}."
+        )
+
+    item.status = status.lower()
+
+    item.admin_remarks = (
+        admin_remarks.strip()
+        if admin_remarks
+        else None
+    )
+
     item.reviewed_at = datetime.now(timezone.utc)
+
     db.commit()
     db.refresh(item)
+
     return item
+
+
+# ADMIN: ISSUE A VOUCHER
+def issue_voucher(
+    db: Session,
+    request_id: int,
+    voucher_code: str,
+    admin_remarks: str | None = None,
+):
+
+    item = (
+        db.query(RewardRequest)
+        .filter(RewardRequest.id == request_id)
+        .with_for_update()
+        .first()
+    )
+
+    if item is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Reward request not found."
+        )
+
+    if item.status != "approved":
+        raise HTTPException(
+            status_code=409,
+            detail="Only approved reward requests can receive a voucher."
+        )
+
+    voucher_code = voucher_code.strip()
+
+    if not voucher_code:
+        raise HTTPException(
+            status_code=422,
+            detail="Voucher code cannot be empty."
+        )
+
+    item.voucher_code = voucher_code
+    item.status = "issued"
+    item.issued_at = datetime.now(timezone.utc)
+
+    if admin_remarks:
+        item.admin_remarks = admin_remarks.strip()
+
+    try:
+        db.commit()
+        db.refresh(item)
+        return item
+
+    except Exception:
+        db.rollback()
+        raise

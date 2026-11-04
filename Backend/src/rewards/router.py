@@ -6,20 +6,37 @@ from src.rewards.dtos import (
     RewardRequestCreate,
     RewardRequestResponse,
     RewardRequestReview,
+    RewardVoucherIssue,
 )
-from src.utils.dependencies import get_db, get_current_user, require_admin
+from src.utils.dependencies import (
+    get_db,
+    get_current_user,
+    require_admin,
+)
 from src.user.models import User
+
 
 router = APIRouter(prefix="/rewards", tags=["Rewards"])
 
 
-@router.post("/requests", response_model=RewardRequestResponse, status_code=201)
+# STUDENT: SUBMIT REQUEST
+@router.post(
+    "/requests",
+    response_model=RewardRequestResponse,
+    status_code=201
+)
 def create_reward_request(
     request_data: RewardRequestCreate,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    item = controller.create_request(db, current_user, request_data)
+
+    item = controller.create_request(
+        db,
+        current_user,
+        request_data
+    )
+
     return {
         "id": item.id,
         "student_id": item.student_id,
@@ -33,15 +50,26 @@ def create_reward_request(
         "admin_remarks": item.admin_remarks,
         "requested_at": item.requested_at,
         "reviewed_at": item.reviewed_at,
+        "voucher_code": item.voucher_code,
+        "issued_at": item.issued_at,
     }
 
 
-@router.get("/requests/me", response_model=list[RewardRequestResponse])
+# STUDENT: VIEW OWN REQUESTS
+@router.get(
+    "/requests/me",
+    response_model=list[RewardRequestResponse]
+)
 def get_my_reward_requests(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    items = controller.list_student_requests(db, current_user.id)
+
+    items = controller.list_student_requests(
+        db,
+        current_user.id
+    )
+
     return [
         {
             "id": item.id,
@@ -56,62 +84,87 @@ def get_my_reward_requests(
             "admin_remarks": item.admin_remarks,
             "requested_at": item.requested_at,
             "reviewed_at": item.reviewed_at,
+            "voucher_code": item.voucher_code,
+            "issued_at": item.issued_at,
         }
         for item in items
     ]
 
 
-@router.get("/requests", response_model=list[RewardRequestResponse])
+# ADMIN: VIEW ALL REQUESTS
+@router.get(
+    "/requests",
+    response_model=list[RewardRequestResponse]
+)
 def get_all_reward_requests(
     db: Session = Depends(get_db),
     admin: User = Depends(require_admin),
 ):
+
     return controller.list_all_requests(db)
 
 
-@router.patch("/requests/{request_id}/approve", response_model=RewardRequestResponse)
+# ADMIN: APPROVE REQUEST
+@router.patch(
+    "/requests/{request_id}/approve",
+    response_model=RewardRequestResponse
+)
 def approve_reward_request(
     request_id: int,
     review_data: RewardRequestReview,
     db: Session = Depends(get_db),
     admin: User = Depends(require_admin),
 ):
+
     item = controller.review_request(
-        db, request_id, "approved", review_data.admin_remarks
+        db,
+        request_id,
+        "approved",
+        review_data.admin_remarks
     )
-    return {
-        "id": item.id,
-        "student_id": item.student_id,
-        "reward_name": item.reward_name,
-        "points_required": item.points_required,
-        "points_at_request": item.points_at_request,
-        "status": item.status,
-        "student_note": item.student_note,
-        "admin_remarks": item.admin_remarks,
-        "requested_at": item.requested_at,
-        "reviewed_at": item.reviewed_at,
-    }
+
+    return item
 
 
-@router.patch("/requests/{request_id}/reject", response_model=RewardRequestResponse)
+# ADMIN: REJECT REQUEST
+@router.patch(
+    "/requests/{request_id}/reject",
+    response_model=RewardRequestResponse
+)
 def reject_reward_request(
     request_id: int,
     review_data: RewardRequestReview,
     db: Session = Depends(get_db),
     admin: User = Depends(require_admin),
 ):
+
     item = controller.review_request(
-        db, request_id, "rejected", review_data.admin_remarks
+        db,
+        request_id,
+        "rejected",
+        review_data.admin_remarks
     )
-    return {
-        "id": item.id,
-        "student_id": item.student_id,
-        "reward_name": item.reward_name,
-        "points_required": item.points_required,
-        "points_at_request": item.points_at_request,
-        "status": item.status,
-        "student_note": item.student_note,
-        "admin_remarks": item.admin_remarks,
-        "requested_at": item.requested_at,
-        "reviewed_at": item.reviewed_at,
-    }
+
+    return item
+
+
+# ADMIN: ISSUE VOUCHER
+@router.patch(
+    "/requests/{request_id}/issue",
+    response_model=RewardRequestResponse
+)
+def issue_reward_voucher(
+    request_id: int,
+    voucher_data: RewardVoucherIssue,
+    db: Session = Depends(get_db),
+    admin: User = Depends(require_admin),
+):
+
+    item = controller.issue_voucher(
+        db=db,
+        request_id=request_id,
+        voucher_code=voucher_data.voucher_code,
+        admin_remarks=voucher_data.admin_remarks,
+    )
+
+    return item

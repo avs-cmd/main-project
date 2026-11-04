@@ -40,6 +40,7 @@ def create_user(db: Session, user_data):
         linkedin_url=user_data.linkedin_url,
         password=hash_password(user_data.password),
         role=STUDENT_ROLE,
+        designation="Campus Ambassador"
     )
 
     db.add(user)

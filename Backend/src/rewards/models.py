@@ -27,3 +27,8 @@ class RewardRequest(Base):
     admin_remarks = Column(Text, nullable=True)
     requested_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     reviewed_at = Column(DateTime(timezone=True), nullable=True)
+    voucher_code = Column(String(200), nullable=True)
+    issued_at = Column(DateTime(timezone=True), nullable=True)
+
+
+

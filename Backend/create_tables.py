@@ -2,6 +2,7 @@ from src.utils.db import engine, Base
 from src.user.models import User
 from src.tasks.models import Task, TaskSubmission
 from src.rewards.models import RewardRequest
+from src.announcements.models import Announcement  # noqa: F401
 
 Base.metadata.create_all(bind=engine)
 

@@ -6,10 +6,11 @@ from pathlib import Path
 from src.user.router import router as user_router
 from src.tasks.router import router as tasks_router
 from src.rewards.router import router as rewards_router
-
+from src.announcements.router import router as announcements_router
+from src.announcements.models import Announcement  # noqa: F401
 # Ensure all ORM models are imported before create_tables.py is run.
 from src.rewards.models import RewardRequest  # noqa: F401
-
+from src.admin.router import router as admin_router
 app = FastAPI(
     title="Talerang Campus Ambassador API",
     version="1.0.0",
@@ -42,6 +43,8 @@ app.mount(
 app.include_router(user_router)
 app.include_router(tasks_router)
 app.include_router(rewards_router)
+app.include_router(admin_router)
+app.include_router(announcements_router)
 
 
 @app.get("/")

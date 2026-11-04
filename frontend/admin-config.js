@@ -10,4 +10,4 @@
 
   Do not add /docs, /user, /api or a trailing slash.
 */
-window.TALERANG_API_BASE_URL = "http://127.0.0.1:8000";
+window.TALERANG_API_BASE_URL = "https://main-project-f0fd.onrender.com";

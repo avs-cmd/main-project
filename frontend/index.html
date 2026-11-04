@@ -307,73 +307,22 @@
         <!-- NAVIGATION -->
 
         <nav class="sidebar-nav">
+            <button class="nav-item active" data-page="dashboard"><span class="nav-symbol">▦</span><span>Dashboard</span></button>
+            <button class="nav-item" data-page="tasks"><span class="nav-symbol">✓</span><span>Tasks</span></button>
+           <button class="nav-item" data-page="rankings">
+    <span class="nav-symbol">★</span>
+    <span>Rankings</span>
+</button>
 
-
-            <button class="nav-item active" data-page="home">
-
-                <span class="nav-symbol">⌂</span>
-
-                <span>Home</span>
-
-            </button>
-
-
-            <button class="nav-item" data-page="rewards">
-                <span class="nav-symbol">₹</span>
-                <span>Rewards</span>
-            </button>
-
-            <button class="nav-item" data-page="dashboard">
-
-                <span class="nav-symbol">▦</span>
-
-                <span>Dashboard</span>
-
-            </button>
-
-
-            <button class="nav-item" data-page="tasks">
-
-                <span class="nav-symbol">✓</span>
-
-                <span>Tasks</span>
-
-            </button>
-
-
-            <button class="nav-item" data-page="rankings">
-
-                <span class="nav-symbol">★</span>
-
-                <span>Rankings</span>
-
-            </button>
-
-
-            <button class="nav-item" data-page="announcements">
-
-                <span class="nav-symbol">!</span>
-
-                <span>Announcements</span>
-
-            </button>
-
-
-            <button class="nav-item admin-nav-item hidden" data-page="adminRewards" id="adminRewardsNav">
-                <span class="nav-symbol">⚙</span>
-                <span>Admin Rewards</span>
-            </button>
-
-
-            <button class="nav-item" data-page="profile">
-
-                <span class="nav-symbol">○</span>
-
-                <span>Profile</span>
-
-            </button>
-
-
+<button class="nav-item" data-page="announcements">
+    <span class="nav-symbol">!</span>
+    <span>Announcements</span>
+    <span id="announcementNotificationDot"
+          class="announcement-notification-dot"
+          hidden></span>
+</button>
+            <button class="nav-item" data-page="rewards"><span class="nav-symbol">₹</span><span>Rewards</span></button>
+            <button class="nav-item" data-page="profile"><span class="nav-symbol">○</span><span>Profile</span></button>
         </nav>
 
 
@@ -617,14 +566,15 @@
                         LATEST UPDATE
                     </span>
 
-                    <h2>
-                        Weekly Ambassador Session
-                    </h2>
+                    <h2 id="homeAnnouncementTitle">
+    Latest announcement
+</h2>
 
-                    <p>
-                        Stay connected with the Talerang team
-                        through the weekly ambassador session.
-                    </p>
+<p id="homeAnnouncementDescription">
+    Check the Announcements section for the latest updates from Talerang.
+</p>
+
+                    
 
                     <button class="simple-link" data-go="announcements">
                         View announcement →
@@ -1060,14 +1010,6 @@
 
             </div>
 
-            <div class="reward-info-card">
-                <div>
-                    <span class="section-label">REWARDS</span>
-                    <h2>Reach 1000 points to unlock rewards</h2>
-                    <p>1 point = ₹1 redemption value. Eligible rewards may include a ₹500 voucher, Spotify subscription, Netflix subscription and other vouchers, subject to Talerang reward rules.</p>
-                </div>
-                <strong>1000 PTS → REDEEM</strong>
-            </div>
 
         </section>
 
@@ -1080,82 +1022,156 @@
             <div class="page-heading">
                 <span class="section-label">REWARDS &amp; REDEMPTION</span>
                 <h1>My Rewards</h1>
-                <p>View current rewards, submit a request, and track admin approval and reward issuance.</p>
+                <p>Earn points, follow your journey and request your next reward.</p>
             </div>
 
-            <div class="reward-overview-grid">
-                <div class="reward-threshold-card">
-                    <div>
-                        <span class="section-label light">YOUR CURRENT POINTS</span>
-                        <h2><span id="studentRewardPoints">0</span> Points</h2>
-                        <p id="rewardEligibilityText">Earn points through activities approved by the admin.</p>
+            <section class="reward-journey-shell" aria-labelledby="rewardJourneyTitle">
+                <div class="reward-journey-top">
+                    <div class="reward-heading-copy">
+                        <span class="reward-eyebrow">YOUR REWARDS JOURNEY</span>
+                        <h2 id="rewardJourneyTitle">The Road to Rewards</h2>
+                        <p>Every approved point brings you closer to your next reward.</p>
                     </div>
-                    <div class="reward-value"><span id="rewardProgressPercent">0</span><small>%</small></div>
+                    <div class="reward-wallet">
+                        <div class="reward-wallet-main">
+                            <span class="wallet-label">YOUR POINTS BALANCE</span>
+                            <strong><span id="studentRewardPoints">—</span> <small>points</small></strong>
+                        </div>
+                        <div class="wallet-rate"><strong>1 Point = ₹1</strong><span>Reward value</span></div>
+                    </div>
                 </div>
-                <div class="reward-progress-panel">
-                    <div class="reward-progress-heading"><strong>Next milestone</strong><span><span id="rewardPointsRemaining">1000</span> points to go</span></div>
-                    <div class="reward-progress-track"><div id="rewardProgressBar" class="reward-progress-bar"></div></div>
-                    <p>Reward eligibility begins at 1,000 approved points. Each reward may have its own points requirement.</p>
+
+                <div class="reward-progress-summary">
+                    <div class="reward-progress-labels">
+                        <strong>Your journey progress</strong>
+                        <span id="rewardProgressText">0 / 2,000 points</span>
+                    </div>
+                    <div class="reward-progress-track" role="progressbar" aria-label="Progress to final listed reward" aria-valuemin="0" aria-valuemax="2000" aria-valuenow="0">
+                        <span id="rewardProgressFill"></span>
+                    </div>
                 </div>
-            </div>
 
-            <div class="reward-section-heading"><div><span class="section-label">CURRENT REWARDS</span><h2>Rewards available to request</h2></div></div>
-            <div id="studentAvailableRewards" class="reward-grid"></div>
-
-            <div class="reward-section-heading"><div><span class="section-label">ADMIN REVIEW</span><h2>My reward requests</h2></div></div>
-            <div id="studentRewardRequests" class="reward-request-list"></div>
-            <p class="reward-note">Every request is reviewed by the admin. Reward codes or delivery details appear here only after the admin issues the reward.</p>
-        </section>
-
-
-
-
-        <!-- ADMIN REWARDS MANAGEMENT: shown only in the frontend demo for admin role -->
-        <section id="adminRewards" class="portal-section">
-            <div class="page-heading">
-                <span class="section-label">ADMIN CONTROL PANEL</span>
-                <h1>Rewards Management</h1>
-                <p>Manage reward options, review student requests, and issue reward codes.</p>
-            </div>
-
-            <div class="admin-reward-summary">
-                <div class="admin-summary-card"><span>Reward options</span><strong id="adminRewardCount">0</strong></div>
-                <div class="admin-summary-card"><span>Pending requests</span><strong id="adminPendingCount">0</strong></div>
-                <div class="admin-summary-card"><span>Issued rewards</span><strong id="adminIssuedCount">0</strong></div>
-            </div>
-
-            <div class="admin-reward-layout">
-                <form id="addRewardForm" class="admin-form-card">
-                    <span class="section-label">REWARD CATALOGUE</span>
-                    <h2>Add a reward option</h2>
-                    <label for="newRewardName">Reward name</label>
-                    <input id="newRewardName" type="text" placeholder="e.g. ₹500 voucher" required="">
-                    <label for="newRewardDescription">Description</label>
-                    <textarea id="newRewardDescription" rows="3" placeholder="What does the reward include?" required=""></textarea>
-                    <label for="newRewardPoints">Points required</label>
-                    <input id="newRewardPoints" type="number" min="0" value="1000" required="">
-                    <label for="newRewardQuantity">Available quantity</label>
-                    <input id="newRewardQuantity" type="number" min="1" value="10" required="">
-                    <button class="primary-btn" type="submit">Add reward option</button>
-                </form>
-                <div class="admin-form-card">
-                    <span class="section-label">AVAILABLE OPTIONS</span>
-                    <h2>Reward catalogue</h2>
-                    <div id="adminRewardCatalogue" class="admin-catalogue-list"></div>
+                <div class="reward-milestone-heading">
+                    <div>
+                        <span class="reward-eyebrow">SIX REWARD STOPS</span>
+                        <h2 id="rewardMilestoneTitle">Follow the road</h2>
+                    </div>
+                    <div class="reward-next-card">
+                        <span>YOUR NEXT MILESTONE</span>
+                        <strong id="rewardNextMilestone">250 points</strong>
+                        <p id="rewardPointsToNext">250 points to your first reward</p>
+                    </div>
                 </div>
-            </div>
 
-            <div class="admin-form-card admin-requests-card">
-                <span class="section-label">STUDENT REDEMPTIONS</span>
-                <h2>Reward requests</h2>
-                <p class="admin-help-text">Approve or reject a request. To issue a voucher, enter a real code supplied by Talerang/provider. For a physical reward, enter handover or delivery details.</p>
-                <div id="adminRewardRequests" class="admin-requests-list"></div>
-            </div>
-            <div class="admin-form-card admin-requests-card">
-                <span class="section-label">TASK POINT APPROVAL</span>
-                <h2>Pending activity submissions</h2>
-                <p class="admin-help-text">Approve completed activities before points are added to a student's total.</p>
-                <div id="adminTaskSubmissions" class="admin-requests-list"></div>
+                <div class="reward-roadmap" id="rewardRoadmap">
+                    <svg class="reward-road-svg" viewBox="0 0 1000 792" preserveAspectRatio="none" aria-hidden="true">
+                        <defs>
+                            <marker id="rewardArrowHead" markerWidth="10" markerHeight="10" refX="7" refY="5" orient="auto" markerUnits="userSpaceOnUse">
+                                <path d="M0 0 L10 5 L0 10 Z" fill="#F5C451"></path>
+                            </marker>
+                        </defs>
+                        <path class="reward-road-edge" d="M455 66 C455 120 545 144 545 198 S455 276 455 330 S545 408 545 462 S455 540 455 594 S545 672 545 726"></path>
+                        <path class="reward-road-center" d="M455 66 C455 120 545 144 545 198 S455 276 455 330 S545 408 545 462 S455 540 455 594 S545 672 545 726"></path>
+                        <path class="reward-road-direction" d="M455 66 C455 120 545 144 545 198"></path>
+                        <path class="reward-road-direction" d="M545 198 C545 252 455 276 455 330"></path>
+                        <path class="reward-road-direction" d="M455 330 C455 384 545 408 545 462"></path>
+                        <path class="reward-road-direction" d="M545 462 C545 516 455 540 455 594"></path>
+                        <path class="reward-road-direction" d="M455 594 C455 648 545 672 545 726"></path>
+                    </svg>
+
+                    <article class="roadmap-stop roadmap-left" data-points="250">
+                        <span class="roadmap-node"><span>01</span></span>
+                        <span class="roadmap-icon">🎁</span>
+                        <div class="roadmap-copy">
+                            <span class="roadmap-point">250 POINTS</span>
+                            <h3>Talerang Gift Pack</h3>
+                            <p class="roadmap-value">₹250 reward value</p>
+                            <p class="roadmap-state">Upcoming</p>
+                        </div>
+                    </article>
+
+                    <article class="roadmap-stop roadmap-right" data-points="500">
+                        <span class="roadmap-node"><span>02</span></span>
+                        <span class="roadmap-icon">💳</span>
+                        <div class="roadmap-copy">
+                            <span class="roadmap-point">500 POINTS</span>
+                            <h3>₹500 Voucher</h3>
+                            <p class="roadmap-value">₹500 voucher</p>
+                            <p class="roadmap-state">Upcoming</p>
+                        </div>
+                    </article>
+
+                    <article class="roadmap-stop roadmap-left" data-points="750">
+                        <span class="roadmap-node"><span>03</span></span>
+                        <span class="roadmap-icon">🎧</span>
+                        <div class="roadmap-copy">
+                            <span class="roadmap-point">750 POINTS</span>
+                            <h3>Spotify Subscription</h3>
+                            <p class="roadmap-value">₹750 reward value</p>
+                            <p class="roadmap-state">Upcoming</p>
+                        </div>
+                    </article>
+
+                    <article class="roadmap-stop roadmap-right" data-points="1000">
+                        <span class="roadmap-node"><span>04</span></span>
+                        <span class="roadmap-icon">🎬</span>
+                        <div class="roadmap-copy">
+                            <span class="roadmap-point">1,000 POINTS</span>
+                            <h3>Netflix Subscription</h3>
+                            <p class="roadmap-value">₹1,000 reward value</p>
+                            <p class="roadmap-state">Upcoming</p>
+                        </div>
+                    </article>
+
+                    <article class="roadmap-stop roadmap-left" data-points="1500">
+                        <span class="roadmap-node"><span>05</span></span>
+                        <span class="roadmap-icon">🍽️</span>
+                        <div class="roadmap-copy">
+                            <span class="roadmap-point">1,500 POINTS</span>
+                            <h3>Sponsored Lunch</h3>
+                            <p class="roadmap-value">₹1,500 reward value</p>
+                            <p class="roadmap-state">Upcoming</p>
+                        </div>
+                    </article>
+
+                    <article class="roadmap-stop roadmap-right" data-points="2000">
+                        <span class="roadmap-node"><span>06</span></span>
+                        <span class="roadmap-icon">✈️</span>
+                        <div class="roadmap-copy">
+                            <span class="roadmap-point">2,000 POINTS</span>
+                            <h3>Trip to Alibaug</h3>
+                            <p class="roadmap-value">₹2,000 reward value</p>
+                            <p class="roadmap-state">Upcoming</p>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="reward-road-legend">
+                    <span><i class="legend-dot reached"></i> Unlocked</span>
+                    <span><i class="legend-dot next"></i> Next reward</span>
+                    <span><i class="legend-dot upcoming"></i> Upcoming</span>
+                </div>
+                <p class="reward-roadmap-disclaimer">1 point = ₹1 reward value. Reaching a milestone makes you eligible to request that reward; fulfilment is subject to Talerang admin approval and availability.</p>
+            </section>
+
+            <div class="reward-request-layout">
+                <div class="reward-request-form-card">
+                    <span class="section-label">MAKE A REQUEST</span>
+                    <h2>Request a Reward</h2>
+<p>
+    Enter the name of the reward you want to request.
+    Your request will be sent to the Talerang team for review.
+</p>
+                    <form id="studentRewardRequestForm">
+                        <div class="input-group"><label for="requestedRewardName">Reward name</label><input id="requestedRewardName" name="reward_name" type="text" maxlength="150" placeholder="e.g. Spotify Subscription" required=""></div>
+                        <div class="input-group"><label for="requestCurrentPoints">Your current points</label><input id="requestCurrentPoints" type="text" value="Loading points..." readonly="" aria-readonly="true"></div>
+                        <div class="input-group"><label for="studentRewardNote">Student note (optional)</label><textarea id="studentRewardNote" name="student_note" rows="3" maxlength="500" placeholder="Add any additional details..."></textarea></div>
+                        <div class="reward-honesty-notice"><strong>Important notice</strong><p>Please do not enter false information. Incorrect or misleading task submissions and reward requests may be rejected by the Talerang team.</p></div>
+                        <button class="primary-btn" id="submitStudentRewardRequest" type="submit">Submit Reward Request</button>
+                        <p class="reward-form-message" id="rewardRequestMessage" role="status" aria-live="polite"></p>
+                    </form>
+                </div>
+                <div class="reward-my-requests-card"><span class="section-label">REQUEST HISTORY</span><h2>My Reward Requests</h2><p>Track Pending, Approved, Rejected and Issued requests, including any details shared by the Talerang team.</p><div id="studentRewardRequests" class="reward-request-list"><p class="empty-state">Loading your requests...</p></div></div>
             </div>
         </section>
 
@@ -1248,95 +1264,26 @@
 
         <section id="announcements" class="portal-section">
 
-            <div class="page-heading">
+    <div class="page-heading">
+        <span class="section-label">STAY UPDATED</span>
+        <h1>Announcements</h1>
+        <p>Important updates and communication from Talerang.</p>
+    </div>
 
-                <span class="section-label">
-                    STAY UPDATED
-                </span>
+    <div class="announcement-toolbar">
+        <p>Updates published by the Talerang team.</p>
 
-                <h1>
-                    Announcements
-                </h1>
+        <button type="button" class="outline-dark-btn"
+                id="refreshStudentAnnouncements">
+            Refresh updates
+        </button>
+    </div>
 
-                <p>
-                    Important updates and communication from Talerang.
-                </p>
+    <div id="studentAnnouncementsList" class="student-announcements-list">
+        <p class="announcement-empty">Loading announcements...</p>
+    </div>
 
-            </div>
-
-
-            <div class="announcement-card">
-
-                <div class="announcement-top">
-
-                    <div class="announcement-mark">
-                        !
-                    </div>
-
-                    <div>
-
-                        <span>
-                            LATEST ANNOUNCEMENT
-                        </span>
-
-                        <h2>
-                            Weekly Ambassador Session
-                        </h2>
-
-                        <p>
-                            Weekly Campus Ambassador update
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="announcement-body">
-
-                    <p>
-                        Join the weekly Talerang Campus Ambassador
-                        session to stay updated about activities,
-                        upcoming opportunities, points and
-                        leadership progression.
-                    </p>
-
-
-                    <div class="announcement-meta">
-
-                        <div>
-                            <strong>
-                                10 pts
-                            </strong>
-
-                            <span>
-                                Call attendance
-                            </span>
-                        </div>
-
-
-                        <div>
-                            <strong>
-                                Weekly
-                            </strong>
-
-                            <span>
-                                Team session
-                            </span>
-                        </div>
-
-                    </div>
-
-
-                    <a id="whatsappAnnouncement" href="https://chat.whatsapp.com/" target="_blank" class="whatsapp-btn">
-                        Join WhatsApp Session →
-                    </a>
-
-                </div>
-
-            </div>
-
-        </section>
+</section>
 
 
         <!-- =================================================

@@ -1,298 +1,1753 @@
-/* ============================================================
-   TALERANG ADMIN PORTAL
-   Demo data only. Connect to FastAPI/PostgreSQL for production.
-   ============================================================ */
+/* =========================================================
 
-// ============================================================
-// 1. DEMO STUDENT AND TASK DATA
-// ============================================================
-const students = [
- {id:1,name:"Avni Agarwal",email:"avni@example.com",mobile:"9876543210",college:"ABC College",points:110,position:"Campus Ambassador",linkedin:"https://linkedin.com/",tasks:2},
- {id:2,name:"Rahul Sharma",email:"rahul@example.com",mobile:"9876543211",college:"Delhi University",points:340,position:"Chapter President",linkedin:"https://linkedin.com/",tasks:5},
- {id:3,name:"Priya Singh",email:"priya@example.com",mobile:"9876543212",college:"Amity University",points:260,position:"Campus Ambassador",linkedin:"https://linkedin.com/",tasks:4},
- {id:4,name:"Ananya Verma",email:"ananya@example.com",mobile:"9876543213",college:"Christ University",points:190,position:"Campus Ambassador",linkedin:"https://linkedin.com/",tasks:3}
+   TALERANG CAMPUS AMBASSADOR - ADMIN PORTAL
+
+   Local API: http://127.0.0.1:8000
+
+   Demo mode uses sample data only.
+
+\========================================================= */
+
+
+
+"use strict";
+
+
+
+// ------------------------------
+
+// Configuration and application state
+
+// ------------------------------
+
+const $ = (id) => document.getElementById(id);
+
+const TOKEN_KEY = "talerangAdminAccessToken";
+
+
+
+let demoMode = false;
+
+let selectedStudentId = null;
+
+let students = [];
+
+let submissions = [];
+
+let rewards = [];
+
+let rankings = [];
+
+
+
+// ------------------------------
+
+// Demo data (does not affect database)
+
+// ------------------------------
+
+const demoStudents = [
+
+  {
+
+    id: 101,
+
+    full_name: "Aarav Mehta",
+
+    email: "aarav.mehta@example.com",
+
+    mobile: "9876500001",
+
+    college: "HR College",
+
+    linkedin_url: "https://linkedin.com/",
+
+    designation: "Chapter Ambassador",
+
+    total_points: 420,
+
+    completed_activities: 3,
+
+    rewards_count: 1,
+
+  },
+
+  {
+
+    id: 102,
+
+    full_name: "Isha Sharma",
+
+    email: "isha.sharma@example.com",
+
+    mobile: "9876500002",
+
+    college: "NM College",
+
+    linkedin_url: "https://linkedin.com/",
+
+    designation: "Campus Ambassador",
+
+    total_points: 110,
+
+    completed_activities: 2,
+
+    rewards_count: 0,
+
+  },
+
+  {
+
+    id: 103,
+
+    full_name: "Riya Kapoor",
+
+    email: "riya.kapoor@example.com",
+
+    mobile: "9876500003",
+
+    college: "Jai Hind College",
+
+    linkedin_url: "https://linkedin.com/",
+
+    designation: "Campus Ambassador",
+
+    total_points: 300,
+
+    completed_activities: 2,
+
+    rewards_count: 1,
+
+  },
+
 ];
-let studentTasks = [
- {id:1,student:"Avni Agarwal",activity:"Refer a Student",points:80,status:"Approved",date:"05 Oct 2026"},
- {id:2,student:"Avni Agarwal",activity:"Distribute Talerang Material",points:30,status:"Approved",date:"04 Oct 2026"},
- {id:3,student:"Priya Singh",activity:"Social Media Post",points:50,status:"Pending",date:"05 Oct 2026"},
- {id:4,student:"Rahul Sharma",activity:"Host a Workshop",points:100,status:"Approved",date:"03 Oct 2026"},
- {id:5,student:"Ananya Verma",activity:"Weekly Team Call",points:10,status:"Pending",date:"05 Oct 2026"}
+
+
+
+const demoSubmissions = [
+
+  { submission_id: 501, student_id: 101, task_title: "Brochure Distribution", student_description: "Distributed Talerang brochures to students outside the college auditorium.", submitted_at: "2026-10-29", points: 100, status: "completed", photo_url: "", admin_remarks: "" },
+
+  { submission_id: 502, student_id: 101, task_title: "Put Up Posters", student_description: "Placed programme posters on the college notice board.", submitted_at: "2026-10-27", points: 100, status: "completed", photo_url: "", admin_remarks: "" },
+
+  { submission_id: 503, student_id: 101, task_title: "Social Media Post", student_description: "Shared the Campus Ambassador registration drive on Instagram.", submitted_at: "2026-10-25", points: 50, status: "completed", photo_url: "", admin_remarks: "" },
+
+  { submission_id: 504, student_id: 102, task_title: "Workshop", student_description: "Helped coordinate a student career-readiness workshop.", submitted_at: "2026-10-28", points: 100, status: "completed", photo_url: "", admin_remarks: "" },
+
+  { submission_id: 505, student_id: 102, task_title: "Weekly Team Call", student_description: "Participated in the weekly chapter call.", submitted_at: "2026-10-26", points: 10, status: "completed", photo_url: "", admin_remarks: "" },
+
+  { submission_id: 506, student_id: 103, task_title: "Refer a Student", student_description: "Referred a classmate to the programme.", submitted_at: "2026-10-30", points: 200, status: "completed", photo_url: "", admin_remarks: "" },
+
+  { submission_id: 507, student_id: 103, task_title: "Brochure Distribution", student_description: "Shared brochures during the college club fair.", submitted_at: "2026-10-24", points: 100, status: "completed", photo_url: "", admin_remarks: "" },
+
 ];
 
-// ============================================================
-// 2. SHARED DOM REFERENCES
-// ============================================================
-const $ = id => document.getElementById(id);
-const adminAuth=$("adminAuth"), adminPortal=$("adminPortal"), loginTab=$("loginTab"), signupTab=$("signupTab");
-const loginForm=$("adminLoginForm"), signupForm=$("adminSignupForm"), authHeading=$("authHeading"), authSubtitle=$("authSubtitle"), authMessage=$("authMessage");
 
-// ============================================================
-// 3. ADMIN LOGIN AND SIGNUP
-// ============================================================
-// Switch to the Login form.
-loginTab.addEventListener("click",()=>{loginTab.classList.add("active");signupTab.classList.remove("active");loginForm.classList.remove("hidden");signupForm.classList.add("hidden");authHeading.textContent="Welcome back";authSubtitle.textContent="Sign in to manage the Campus Ambassador program.";authMessage.textContent="";});
-signupTab.addEventListener("click",()=>{signupTab.classList.add("active");loginTab.classList.remove("active");signupForm.classList.remove("hidden");loginForm.classList.add("hidden");authHeading.textContent="Create admin account";authSubtitle.textContent="Set up your administrator access.";authMessage.textContent="";});
-const API_BASE_URL = "http://127.0.0.1:8000";
-const ADMIN_TOKEN_KEY = "talerangAdminAccessToken";
 
-// ADMIN LOGIN — authenticate with FastAPI and verify the user's role.
-loginForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
+const demoRewards = [
+  { id: 701, student_id: 101, student_name: "Aarav Mehta", student_email: "aarav.mehta@example.com", reward_name: "Talerang Gift Pack", points_at_request: 250, current_points: 420, student_note: "I would like to request this reward.", requested_at: "2026-11-01", status: "pending", admin_remarks: "" },
+  { id: 702, student_id: 102, student_name: "Isha Sharma", student_email: "isha.sharma@example.com", reward_name: "Spotify Subscription", points_at_request: 750, current_points: 110, student_note: "Please consider my request.", requested_at: "2026-11-02", status: "pending", admin_remarks: "" },
+  { id: 703, student_id: 103, student_name: "Riya Kapoor", student_email: "riya.kapoor@example.com", reward_name: "₹500 Voucher", points_at_request: 500, current_points: 300, student_note: "Thank you.", requested_at: "2026-11-03", status: "approved", admin_remarks: "Your reward request has been approved." },
+];
+
+
+
+// ------------------------------
+
+// Small utilities
+
+// ------------------------------
+
+function escapeHTML(value) {
+
+  return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+
+  })[char]);
+
+}
+
+
+
+function normaliseStatus(value) {
+
+  return String(value || "pending").toLowerCase().replaceAll("_", " ");
+
+}
+
+
+
+function formatDate(value) {
+
+  if (!value) return "—";
+
+  const date = new Date(value);
+
+  return Number.isNaN(date.getTime()) ? String(value) : date.toLocaleDateString("en-IN", {
+
+    day: "2-digit", month: "short", year: "numeric",
+
+  });
+
+}
+
+
+
+function showMessage(message, isError = false) {
+
+  const element = $("globalMessage");
+
+  element.textContent = message;
+
+  element.classList.toggle("error", isError);
+
+  element.classList.remove("hidden");
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+
+}
+
+
+
+function setAuthMessage(message) {
+
+  $("authMessage").textContent = message || "";
+
+}
+
+
+
+function getStudentName(student) {
+
+  return student.full_name || student.name || "Student";
+
+}
+
+
+
+function getStudentPoints(student) {
+
+  return Number(student.total_points ?? student.points ?? 0);
+
+}
+
+
+
+function getSubmissionId(item) {
+
+  return Number(item.submission_id ?? item.id);
+
+}
+
+
+
+function getSubmissionTitle(item) {
+
+  return item.task_title || item.task_name || `Task #${getSubmissionId(item)}`;
+
+}
+
+
+
+function getSubmissionCaption(item) {
+
+  return item.student_description || item.caption || "No description provided.";
+
+}
+
+
+
+function getSubmissionPhoto(item) {
+
+  return item.photo_url || item.photo_path || "";
+
+}
+
+
+
+// ------------------------------
+
+// API helper
+
+// ------------------------------
+
+async function api(path, options = {}) {
+
+  const baseURL = String(window.TALERANG_API_BASE_URL || "http://127.0.0.1:8000").replace(/\/+$/, "");
+
+  const token = localStorage.getItem(TOKEN_KEY);
+
+  const headers = { ...(options.headers || {}) };
+
+
+
+  if (options.body && !(options.body instanceof FormData)) {
+
+    headers["Content-Type"] = "application/json";
+
+  }
+
+  if (token) headers.Authorization = `Bearer ${token}`;
+
+
+
+  const response = await fetch(`${baseURL}${path}`, { ...options, headers });
+
+  const data = await response.json().catch(() => ({}));
+
+
+
+  if (!response.ok) {
+
+    const detail = typeof data.detail === "string" ? data.detail : `Request failed (${response.status})`;
+
+    throw new Error(detail);
+
+  }
+
+  return data;
+
+}
+
+
+
+function requireLiveMode() {
+
+  if (demoMode) return false;
+
+  if (!localStorage.getItem(TOKEN_KEY)) {
+
+    showMessage("Please log in again to continue.", true);
+
+    logout();
+
+    return false;
+
+  }
+
+  return true;
+
+}
+
+
+
+// ------------------------------
+
+// Login, logout and demo mode
+
+// ------------------------------
+
+async function handleLogin(event) {
+
+  event.preventDefault();
+
+  setAuthMessage("Signing in...");
+
+
+
+  try {
 
     const identity = $("adminLoginEmail").value.trim();
+
     const password = $("adminLoginPassword").value;
 
-    if (!identity || !password) {
-        authMessage.textContent = "Please enter your email and password.";
-        return;
+    const login = await api("/user/login", {
+
+      method: "POST",
+
+      body: JSON.stringify({ identity, password }),
+
+    });
+
+
+
+    if (!login.access_token) throw new Error("The login response did not contain an access token.");
+
+    localStorage.setItem(TOKEN_KEY, login.access_token);
+
+
+
+    const currentUser = await api("/user/me");
+
+    if (String(currentUser.role || "").toLowerCase() !== "admin") {
+
+      localStorage.removeItem(TOKEN_KEY);
+
+      throw new Error("This account does not have admin access.");
+
     }
 
-    authMessage.textContent = "Signing in...";
+
+
+    demoMode = false;
+
+    $("adminAuth").classList.add("hidden");
+
+    $("adminPortal").classList.remove("hidden");
+
+    $("demoBanner").classList.add("hidden");
+
+    setAuthMessage("");
+
+    await loadStudents();
+
+    await loadRankings();
+
+    await loadRewards();
+
+    await loadAnnouncements();
+
+
+
+    showPage("students");
+
+  } catch (error) {
+
+    setAuthMessage(error.message || "Unable to log in. Check the backend and credentials.");
+
+  }
+
+}
+
+
+
+function logout() {
+
+  localStorage.removeItem(TOKEN_KEY);
+
+  demoMode = false;
+
+  selectedStudentId = null;
+
+  $("adminPortal").classList.add("hidden");
+
+  $("adminAuth").classList.remove("hidden");
+
+  $("demoBanner").classList.add("hidden");
+
+  $("adminLoginPassword").value = "";
+
+  setAuthMessage("You have been logged out.");
+
+}
+
+
+
+function startDemo() {
+
+  demoMode = true;
+
+  students = demoStudents.map((student) => ({ ...student }));
+
+  submissions = demoSubmissions.map((item) => ({ ...item }));
+
+  rewards = demoRewards.map((reward) => ({ ...reward }));
+
+  rankings = [];
+
+
+
+  $("adminAuth").classList.add("hidden");
+
+  $("adminPortal").classList.remove("hidden");
+
+  $("demoBanner").classList.remove("hidden");
+
+  $("globalMessage").classList.add("hidden");
+
+
+
+  renderStudents();
+
+  renderRankings();
+
+  renderRewards();
+
+  showPage("students");
+
+}
+
+
+
+// ------------------------------
+
+// Navigation
+
+// ------------------------------
+
+function showPage(page) {
+
+  document.querySelectorAll(".admin-page").forEach((section) => {
+
+    section.classList.toggle("active", section.id === `${page}Page`);
+
+  });
+
+  document.querySelectorAll(".admin-nav-item").forEach((button) => {
+
+    button.classList.toggle("active", button.dataset.page === page);
+
+  });
+
+
+
+  const titles = {
+
+    students: "Student Information",
+
+    rankings: "Rankings",
+
+    rewards: "Reward Management",
+
+    announcements: "Announcements",
+
+  };
+
+  $("pageTitle").textContent = titles[page] || "Student Information";
+
+
+
+  if (page === "students") loadStudents().catch((error) => showMessage(error.message, true));
+
+  if (page === "rankings") loadRankings().catch((error) => showMessage(error.message, true));
+
+  if (page === "rewards") loadRewards().catch((error) => showMessage(error.message, true));
+
+  if (page === "announcements") {loadAnnouncements().catch((error) => showMessage(error.message, true));
+
+}
+
+}
+
+
+
+
+
+// ------------------------------
+
+// Student information and profiles
+
+// ------------------------------
+
+async function loadStudents() {
+
+  if (demoMode) return renderStudents();
+
+  if (!requireLiveMode()) return;
+
+
+
+  $("studentsTable").innerHTML = '<tr><td colspan="7" class="empty-state">Loading students...</td></tr>';
+
+  try {
+
+    const result = await api("/admin/students");
+
+    students = Array.isArray(result) ? result : (result.students || result.items || []);
+
+    renderStudents();
+
+  } catch (error) {
+
+    $("studentsTable").innerHTML = `<tr><td colspan="7" class="empty-state">${escapeHTML(error.message)}</td></tr>`;
+
+    throw error;
+
+  }
+
+}
+
+
+
+function renderStudents() {
+
+  const tableBody = $("studentsTable");
+
+  if (!students.length) {
+
+    tableBody.innerHTML = '<tr><td colspan="7" class="empty-state">No students found.</td></tr>';
+
+    return;
+
+  }
+
+
+
+  tableBody.innerHTML = students.map((student) => {
+
+    const name = getStudentName(student);
+
+    const linkedin = student.linkedin_url || student.linkedin || "";
+
+    return `
+
+      <tr class="student-row" data-student-id="${Number(student.id)}">
+
+        <td><strong>${escapeHTML(name)}</strong></td>
+
+        <td>${escapeHTML(student.email || "—")}</td>
+
+        <td>${escapeHTML(student.college || "—")}</td>
+
+        <td>${linkedin ? `<a href="${escapeHTML(linkedin)}" target="_blank" rel="noopener noreferrer">View LinkedIn ↗</a>` : "—"}</td>
+
+        <td><strong>${getStudentPoints(student).toLocaleString("en-IN")}</strong></td>
+
+        <td>${escapeHTML(student.designation || "—")}</td>
+
+        <td>${Number(student.rewards_count ?? student.reward_count ?? 0)}</td>
+
+      </tr>`;
+
+  }).join("");
+
+
+
+  document.querySelectorAll(".student-row").forEach((row) => {
+
+    row.addEventListener("click", () => openStudentProfile(Number(row.dataset.studentId)));
+
+  });
+
+  filterStudents();
+
+}
+
+
+
+function filterStudents() {
+
+  const query = $("studentSearch").value.trim().toLowerCase();
+
+  document.querySelectorAll(".student-row").forEach((row) => {
+
+    row.hidden = !row.textContent.toLowerCase().includes(query);
+
+  });
+
+}
+
+
+
+async function openStudentProfile(studentId) {
+
+  selectedStudentId = studentId;
+
+  const student = students.find((item) => Number(item.id) === studentId);
+
+  if (!student) return;
+
+
+
+  let studentSubmissions = submissions.filter((item) => Number(item.student_id) === studentId);
+
+  if (!demoMode) {
+
+    const profileBox = $("studentProfile");
+
+    profileBox.classList.remove("hidden");
+
+    profileBox.innerHTML = '<div class="content-card"><p class="empty-state">Loading student profile and activity history...</p></div>';
+
+
 
     try {
-        const response = await fetch(`${API_BASE_URL}/user/login`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ identity, password })
-        });
 
-        const data = await response.json();
+      const result = await api(`/admin/students/${studentId}/submissions`);
 
-        if (!response.ok) {
-            throw new Error(data.detail || "Login failed. Check your email and password.");
-        }
-        if (!data.access_token) {
-            throw new Error("The server did not return an access token.");
-        }
+      studentSubmissions = Array.isArray(result) ? result : (result.submissions || result.items || []);
 
-        // Confirm the role using the protected backend profile endpoint.
-        const profileResponse = await fetch(`${API_BASE_URL}/user/me`, {
-            headers: { "Authorization": `Bearer ${data.access_token}` }
-        });
-        const profile = await profileResponse.json();
+      submissions = submissions.filter((item) => Number(item.student_id) !== studentId).concat(
 
-        if (!profileResponse.ok) {
-            throw new Error(profile.detail || "Could not verify your account.");
-        }
-        if (profile.role !== "admin") {
-            throw new Error("Access denied. This account is not an admin.");
-        }
+        studentSubmissions.map((item) => ({ ...item, student_id: studentId }))
 
-        localStorage.setItem(ADMIN_TOKEN_KEY, data.access_token);
-        localStorage.setItem("talerangAdminUser", JSON.stringify(profile));
-        localStorage.setItem("talerangAdminLoggedIn", "true");
+      );
 
-        authMessage.textContent = "";
-        showPortal();
     } catch (error) {
-        authMessage.textContent = error.message || "Unable to connect to the backend.";
-    }
-});
 
-// Admin account creation stays restricted until a secure backend flow is implemented.
-signupForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-    authMessage.textContent =
-        "Admin account creation is restricted. Please contact the system administrator.";
-});
+      showMessage(`Could not load activity history: ${error.message}`, true);
 
-// Show the portal only after the backend has verified an admin account.
-function showPortal() {
-    adminAuth.classList.add("hidden");
-    adminPortal.classList.remove("hidden");
-    loadDashboard();
-    loadStudents();
-    loadTasks();
-    loadRankings();
-    loadRewards();
-}
+      return;
 
-// Logout clears the admin session from this browser.
-$("logoutBtn").addEventListener("click", () => {
-    localStorage.removeItem(ADMIN_TOKEN_KEY);
-    localStorage.removeItem("talerangAdminUser");
-    localStorage.removeItem("talerangAdminLoggedIn");
-    adminPortal.classList.add("hidden");
-    adminAuth.classList.remove("hidden");
-});
-
-// Restore a session only when a saved token still belongs to an admin.
-async function restoreAdminSession() {
-    const token = localStorage.getItem(ADMIN_TOKEN_KEY);
-    if (!token) {
-        localStorage.removeItem("talerangAdminLoggedIn");
-        return;
     }
 
-    try {
-        const response = await fetch(`${API_BASE_URL}/user/me`, {
-            headers: { "Authorization": `Bearer ${token}` }
-        });
-        const profile = await response.json();
+  }
 
-        if (!response.ok || profile.role !== "admin") {
-            throw new Error("Admin session is no longer valid.");
-        }
 
-        localStorage.setItem("talerangAdminUser", JSON.stringify(profile));
-        localStorage.setItem("talerangAdminLoggedIn", "true");
-        showPortal();
-    } catch (error) {
-        localStorage.removeItem(ADMIN_TOKEN_KEY);
-        localStorage.removeItem("talerangAdminUser");
-        localStorage.removeItem("talerangAdminLoggedIn");
-        adminPortal.classList.add("hidden");
-        adminAuth.classList.remove("hidden");
+
+  renderStudentProfile(student, studentSubmissions);
+
+}
+
+
+
+function renderStudentProfile(student, studentSubmissions) {
+
+  const profileBox = $("studentProfile");
+
+  const studentId = Number(student.id);
+
+  const studentRewards = rewards.filter((reward) => Number(reward.student_id) === studentId);
+
+  const name = getStudentName(student);
+
+  const linkedin = student.linkedin_url || student.linkedin || "";
+
+
+
+  profileBox.classList.remove("hidden");
+
+  profileBox.innerHTML = `
+
+    <div class="content-card profile-card">
+
+      <div class="card-header">
+
+        <div>
+
+          <span class="section-label">CAMPUS AMBASSADOR PROFILE</span>
+
+          <h2>${escapeHTML(name)}</h2>
+
+          <p>${escapeHTML(student.college || "—")} · ${escapeHTML(student.designation || "—")}</p>
+
+        </div>
+
+        <button class="mini-button neutral" id="closeProfile" type="button">Close profile</button>
+
+      </div>
+
+      <div class="profile-stats">
+
+        <div><strong>${getStudentPoints(student).toLocaleString("en-IN")}</strong><small>Total points</small></div>
+
+        <div><strong>${studentSubmissions.length}</strong><small>Activities submitted</small></div>
+
+        <div><strong>${studentRewards.length || Number(student.rewards_count || 0)}</strong><small>Reward requests</small></div>
+
+      </div>
+
+      <div class="profile-info">
+
+        <span><b>Email</b>${escapeHTML(student.email || "—")}</span>
+
+        <span><b>Mobile</b>${escapeHTML(student.mobile || "—")}</span>
+
+        <span><b>LinkedIn</b>${linkedin ? `<a href="${escapeHTML(linkedin)}" target="_blank" rel="noopener noreferrer">View profile ↗</a>` : "—"}</span>
+
+      </div>
+
+      <h3>Activity History</h3>
+
+      <p class="muted-note">Review submitted evidence. Undo reverses approved points; Reject marks the submission as not accepted.</p>
+
+      <div class="profile-task-grid">
+
+        ${studentSubmissions.length ? studentSubmissions.map((item) => renderSubmissionCard(item)).join("") : '<p class="muted-note">No activity submissions found.</p>'}
+
+      </div>
+
+      <h3>Rewards</h3>
+
+      <div class="profile-rewards">
+
+        ${studentRewards.length ? studentRewards.map((reward) => `
+
+          <div><strong>${escapeHTML(reward.reward_name)}</strong>
+
+          <span>${escapeHTML(reward.status)}${reward.voucher_code ? ` · ${escapeHTML(reward.voucher_code)}` : ""}</span></div>`).join("") : '<p class="muted-note">No reward requests recorded in this session.</p>'}
+
+      </div>
+
+    </div>`;
+
+
+
+  $("closeProfile").addEventListener("click", () => profileBox.classList.add("hidden"));
+
+  profileBox.querySelectorAll("[data-submission-action]").forEach((button) => {
+
+    button.addEventListener("click", () => reviewSubmission(
+
+      Number(button.dataset.submissionId), button.dataset.submissionAction
+
+    ));
+
+  });
+
+}
+
+
+
+function renderSubmissionCard(item) {
+
+  const id = getSubmissionId(item);
+
+  const status = normaliseStatus(item.status);
+
+  const points = Number(item.points ?? item.approved_points ?? 0);
+
+  const photo = getSubmissionPhoto(item);
+
+  const remarks = item.admin_remarks || "";
+
+
+
+  return `
+
+    <article class="submission-card">
+
+      <div class="submission-heading">
+
+        <div><h4>${escapeHTML(getSubmissionTitle(item))}</h4><p>${escapeHTML(formatDate(item.submitted_at || item.date))}</p></div>
+
+        <span class="status ${escapeHTML(status)}">${escapeHTML(status)}</span>
+
+      </div>
+
+      <p class="submission-caption">${escapeHTML(getSubmissionCaption(item))}</p>
+
+      ${photo ? `
+
+        <a class="submission-photo-link" href="${escapeHTML(photo)}" target="_blank" rel="noopener noreferrer">
+
+          <img class="submission-photo" src="${escapeHTML(photo)}" alt="${escapeHTML(getSubmissionTitle(item))} evidence">
+
+          <span>View full photo ↗</span>
+
+        </a>` : '<div class="photo-empty">No photo attached.</div>'}
+
+      <div class="submission-footer"><strong>${points} points</strong><span>Submission #${id}</span></div>
+
+      ${remarks ? `<p class="muted-note">Admin remarks: ${escapeHTML(remarks)}</p>` : ""}
+
+      <div class="submission-actions">
+
+        ${status === "completed" ? `
+
+          <button class="mini-button neutral" type="button" data-submission-action="undo" data-submission-id="${id}">Undo task</button>
+
+          <button class="mini-button danger" type="button" data-submission-action="reject" data-submission-id="${id}">Reject task</button>` : `<span class="muted-note">${status === "undone" ? "Points reversed" : status === "rejected" ? "No points awarded" : "No action available"}</span>`}
+
+      </div>
+
+    </article>`;
+
+}
+
+
+
+async function reviewSubmission(submissionId, action) {
+
+  const item = submissions.find((submission) => getSubmissionId(submission) === submissionId);
+
+  if (!item) return;
+
+  const actionLabel = action === "undo" ? "undo this submission and reverse its points" : "reject this submission";
+
+  if (!window.confirm(`Are you sure you want to ${actionLabel}?`)) return;
+
+
+
+  if (demoMode) {
+
+    item.status = action === "undo" ? "undone" : "rejected";
+
+    item.points = 0;
+
+    const student = students.find((entry) => Number(entry.id) === Number(item.student_id));
+
+    if (student) {
+
+      student.total_points = submissions
+
+        .filter((submission) => Number(submission.student_id) === Number(student.id) && normaliseStatus(submission.status) === "completed")
+
+        .reduce((total, submission) => total + Number(submission.points || 0), 0);
+
     }
+
+    showMessage(`Submission ${submissionId} ${action === "undo" ? "undone" : "rejected"} in demo mode.`);
+
+    renderStudents();
+
+    renderRankings();
+
+    await openStudentProfile(Number(item.student_id));
+
+    return;
+
+  }
+
+
+
+  try {
+
+    await api(`/admin/submissions/${submissionId}/${action}`, {
+
+      method: "POST",
+
+      body: JSON.stringify({ remarks: "Reviewed from Admin Portal" }),
+
+    });
+
+    showMessage(`Submission ${action === "undo" ? "undone" : "rejected"} successfully.`);
+
+    await loadStudents();
+
+    await loadRankings();
+
+    await openStudentProfile(Number(item.student_id));
+
+  } catch (error) {
+
+    showMessage(error.message, true);
+
+  }
+
 }
 
-// ============================================================
-// 4. ADMIN NAVIGATION
-// ============================================================
-const navItems=document.querySelectorAll(".admin-nav-item"), pages=document.querySelectorAll(".admin-page"), pageTitle=$("pageTitle");
-navItems.forEach(item=>item.addEventListener("click",()=>openPage(item.dataset.page)));
-function openPage(page){
- navItems.forEach(item=>item.classList.toggle("active",item.dataset.page===page));
- pages.forEach(el=>el.classList.remove("active"));
- const selected=$(page+"Page");if(selected)selected.classList.add("active");
- const titles={dashboard:"Dashboard",students:"Student Information",tasks:"Student Tasks",rankings:"Rankings",rewards:"Rewards Management",announcements:"Announcements"};
- pageTitle.textContent=titles[page]||"Dashboard";
- if(page==="dashboard")loadDashboard();if(page==="students")loadStudents();if(page==="tasks")loadTasks();if(page==="rankings")loadRankings();if(page==="rewards")loadRewards();
-}
-// ============================================================
-// 5. DASHBOARD
-// ============================================================
-function loadDashboard(){
- $("totalStudents").textContent=students.length;
- $("totalActivities").textContent=studentTasks.filter(t=>t.status==="Approved").length;
- $("chapterPresidents").textContent=students.filter(s=>s.points>=300).length;
- $("totalPoints").textContent=students.reduce((sum,s)=>sum+s.points,0);
- loadTopStudents();loadRecentActivity();loadLeadershipProgress();
-}
-function loadTopStudents(){
- $("topStudents").innerHTML=[...students].sort((a,b)=>b.points-a.points).slice(0,4).map((s,i)=>`<div class="top-student"><div class="student-rank">#${i+1}</div><div class="student-avatar">${initials(s.name)}</div><div class="student-name"><strong>${escapeHTML(s.name)}</strong><span>${escapeHTML(s.college)}</span></div><div class="student-points">${s.points} pts</div></div>`).join("");
-}
-function loadLeadershipProgress(){const count=students.filter(s=>s.points>=300).length,percent=students.length?Math.round(count/students.length*100):0;$("presidentPercentage").textContent=percent+"%";$("presidentProgress").style.width=percent+"%";}
-function loadRecentActivity(){$("recentActivity").innerHTML=studentTasks.slice().reverse().slice(0,4).map(t=>`<div class="activity-row"><div class="activity-dot"></div><div class="activity-info"><strong>${escapeHTML(t.student)}</strong><span>${escapeHTML(t.activity)} · ${escapeHTML(t.status)}</span></div><div class="activity-points">${t.points} pts</div></div>`).join("");}
-// ============================================================
-// 6. STUDENT MANAGEMENT
-// ============================================================
-function loadStudents(){
- $("studentsTable").innerHTML=[...students].sort((a,b)=>b.points-a.points).map((s,i)=>`<tr><td><div class="student-cell"><div class="table-avatar">${initials(s.name)}</div><strong>${escapeHTML(s.name)}</strong></div></td><td>${escapeHTML(s.college)}</td><td><span class="${s.points>=300?"position president":"position"}">${escapeHTML(s.position)}</span></td><td class="points">${s.points}</td><td>#${i+1}</td><td><a href="${safeURL(s.linkedin)}" target="_blank" rel="noopener noreferrer" class="linkedin">LinkedIn ↗</a></td><td><button class="view-button" onclick="viewStudent(${s.id})">View</button></td></tr>`).join("");
- filterStudents();
-}
-$("studentSearch").addEventListener("input",filterStudents);
-function filterStudents(){const value=$("studentSearch").value.toLowerCase().trim();document.querySelectorAll("#studentsTable tr").forEach(row=>row.style.display=row.textContent.toLowerCase().includes(value)?"":"none");}
-function viewStudent(id){const s=students.find(x=>x.id===id);if(!s)return;alert("STUDENT PROFILE\n\nName: "+s.name+"\nEmail: "+s.email+"\nMobile: "+s.mobile+"\nCollege: "+s.college+"\nPosition: "+s.position+"\nPoints: "+s.points+"\nTasks Completed: "+s.tasks+"\nLinkedIn: "+s.linkedin);}
-// ============================================================
-// 7. TASK REVIEW AND POINTS APPROVAL
-// ============================================================
-function loadTasks(){
- $("pendingTasks").textContent=studentTasks.filter(t=>t.status==="Pending").length;$("approvedTasks").textContent=studentTasks.filter(t=>t.status==="Approved").length;$("rejectedTasks").textContent=studentTasks.filter(t=>t.status==="Rejected").length;
- $("tasksTable").innerHTML=studentTasks.map(t=>`<tr><td>${escapeHTML(t.student)}</td><td>${escapeHTML(t.activity)}</td><td class="points">${t.points}</td><td><span class="status ${t.status.toLowerCase()}">${t.status}</span></td><td>${escapeHTML(t.date)}</td><td>${t.status==="Pending"?`<div class="task-action"><button class="approve-button" onclick="approveTask(${t.id})">Approve</button><button class="reject-button" onclick="rejectTask(${t.id})">Reject</button></div>`:"-"}</td></tr>`).join("");
-}
-function approveTask(id){const t=studentTasks.find(x=>x.id===id);if(!t||t.status!=="Pending")return;t.status="Approved";const s=students.find(x=>x.name===t.student);if(s){s.points+=t.points;s.tasks+=1;refreshPosition(s);addNotification(s.email,"Task approved",`Your activity “${t.activity}” was approved and ${t.points} points were added.`);}loadTasks();loadDashboard();loadStudents();loadRankings();loadRewards();}
-function rejectTask(id){const t=studentTasks.find(x=>x.id===id);if(!t||t.status!=="Pending")return;t.status="Rejected";const s=students.find(x=>x.name===t.student);if(s)addNotification(s.email,"Task update",`Your activity “${t.activity}” was rejected.`);loadTasks();loadDashboard();}
-// ============================================================
-// 8. STUDENT RANKINGS
-// ============================================================
-function loadRankings(){$("rankingTable").innerHTML=[...students].sort((a,b)=>b.points-a.points).map((s,i)=>{const progress=Math.min(s.points/300*100,100);return `<tr><td class="rank-number">#${i+1}</td><td>${escapeHTML(s.name)}</td><td>${escapeHTML(s.college)}</td><td><span class="${s.points>=300?"position president":"position"}">${escapeHTML(s.position)}</span></td><td class="points">${s.points} pts</td><td><div class="rank-progress"><div class="rank-progress-fill" style="width:${progress}%"></div></div></td></tr>`;}).join("");}
-// ============================================================
-// 9. ANNOUNCEMENTS
-// ============================================================
-$("announcementForm").addEventListener("submit",event=>{event.preventDefault();const announcement={title:$("announcementTitle").value.trim(),description:$("announcementDescription").value.trim(),whatsapp:$("announcementWhatsapp").value.trim()};localStorage.setItem("talerangAnnouncement",JSON.stringify(announcement));displayAnnouncement(announcement);students.forEach(s=>addNotification(s.email,"New announcement",announcement.title+": "+announcement.description));event.target.reset();});
-function displayAnnouncement(a){const preview=$("announcementPreview");preview.innerHTML=`<span class="announcement-tag">ANNOUNCEMENT</span><h3>${escapeHTML(a.title)}</h3><p>${escapeHTML(a.description)}</p>${a.whatsapp?`<a href="${safeURL(a.whatsapp)}" target="_blank" rel="noopener noreferrer" class="whatsapp-link">Join WhatsApp ↗</a>`:""}`;}
-const savedAnnouncement=localStorage.getItem("talerangAnnouncement");if(savedAnnouncement){try{displayAnnouncement(JSON.parse(savedAnnouncement));}catch(e){localStorage.removeItem("talerangAnnouncement");}}
-document.querySelectorAll("[data-open]").forEach(button=>button.addEventListener("click",()=>openPage(button.dataset.open)));
 
-// ============================================================
-// 10. REWARD MANAGEMENT (DEMO / LOCAL STORAGE)
-// ============================================================
-const REWARD_REQUESTS_KEY="talerangAdminRewardRequestsDemo";
-const REWARD_NOTIFICATIONS_KEY="talerangAdminNotificationsDemo";
-const BROCHURE_KEY="talerangAdminBrochureAllocationDemo";
-// Rewards and the points needed to qualify.
-const REWARD_CATALOG=[
- {id:"voucher500",name:"₹500 Voucher",points:1000},
- {id:"streaming",name:"Streaming Subscription",points:1500}
-];
-// Read saved demo data safely from browser storage.
-function readJSON(key,fallback){try{const parsed=JSON.parse(localStorage.getItem(key));return parsed??fallback;}catch(e){return fallback;}}
-let rewardRequests=readJSON(REWARD_REQUESTS_KEY,[
- {id:1,studentId:1,reward:"₹500 Voucher",pointsRequired:1000,status:"Pending",voucher:""},
- {id:2,studentId:2,reward:"Streaming Subscription",pointsRequired:1500,status:"Pending",voucher:""}
-]);
-let brochureAllocations=readJSON(BROCHURE_KEY,{});
-let adminNotifications=readJSON(REWARD_NOTIFICATIONS_KEY,[]);
-function saveRewards(){localStorage.setItem(REWARD_REQUESTS_KEY,JSON.stringify(rewardRequests));localStorage.setItem(BROCHURE_KEY,JSON.stringify(brochureAllocations));localStorage.setItem(REWARD_NOTIFICATIONS_KEY,JSON.stringify(adminNotifications));}
-function rewardStudentById(id){return students.find(s=>s.id===Number(id));}
-function eligibilityFor(s){return REWARD_CATALOG.filter(r=>s.points>=r.points).map(r=>r.name);}
-// ============================================================
-// 11. REWARD REQUESTS AND BROCHURE INVENTORY DISPLAY
-// ============================================================
-function loadRewards(){
- $("rewardPendingCount").textContent=rewardRequests.filter(r=>r.status==="Pending").length;
- $("rewardApprovedCount").textContent=rewardRequests.filter(r=>r.status==="Approved").length;
- $("brochureAllocatedCount").textContent=Object.values(brochureAllocations).filter(v=>v.allocated).length;
- $("voucherIssuedCount").textContent=rewardRequests.filter(r=>r.status==="Issued").length;
- $("rewardStudentsTable").innerHTML=students.map(s=>{
-  const eligible=eligibilityFor(s),brochure=brochureAllocations[s.id]||{allocated:false,quantity:0};
-  return `<tr><td><div class="student-cell"><div class="table-avatar">${initials(s.name)}</div><strong>${escapeHTML(s.name)}</strong></div></td><td>${escapeHTML(s.email)}</td><td class="points">${s.points} pts</td><td>${eligible.length?`<span class="reward-pill eligible">${eligible.join(", ")}</span>`:`<span class="reward-pill not-eligible">Not yet eligible</span>`}</td><td>${brochure.allocated?`<span class="reward-pill issued">Allocated (${Number(brochure.quantity)||0})</span>`:`<span class="reward-pill not-eligible">Not allocated</span>`}</td><td><div class="button-row"><button class="mini-button ${brochure.allocated?"":"primary"}" onclick="toggleBrochure(${s.id})">${brochure.allocated?"Mark not allocated":"Allocate brochures"}</button></div></td></tr>`;
- }).join("");
- $("rewardRequestsTable").innerHTML=rewardRequests.map(r=>{
-  const s=rewardStudentById(r.studentId),statusClass=r.status.toLowerCase();
-  return `<tr><td>${s?escapeHTML(s.name):"Unknown student"}</td><td>${escapeHTML(r.reward)}</td><td>${Number(r.pointsRequired)||0} pts</td><td><span class="status ${statusClass==="issued"?"approved":statusClass}">${escapeHTML(r.status)}</span></td><td>${r.voucher?escapeHTML(r.voucher):"—"}</td><td>${r.status==="Pending"?`<div class="button-row"><button class="mini-button success" onclick="decideReward(${r.id},'Approved')">Approve</button><button class="mini-button danger" onclick="decideReward(${r.id},'Rejected')">Reject</button></div>`:r.status==="Approved"?`<div class="button-row"><input class="voucher-input" id="voucher-${r.id}" placeholder="Voucher / code"><button class="mini-button primary" onclick="issueVoucher(${r.id})">Issue reward</button></div>`:"—"}</td></tr>`;
- }).join("")||`<tr><td colspan="6" class="empty-state">No reward requests.</td></tr>`;
- renderAdminNotifications();
+
+// ------------------------------
+
+// Rankings
+
+// ------------------------------
+
+async function loadRankings() {
+
+  if (demoMode) return renderRankings();
+
+  if (!requireLiveMode()) return;
+
+
+
+  $("rankingTable").innerHTML = '<tr><td colspan="4" class="empty-state">Loading rankings...</td></tr>';
+
+  try {
+
+    const result = await api("/admin/rankings");
+
+    rankings = Array.isArray(result) ? result : (result.rankings || result.items || []);
+
+    renderRankings();
+
+  } catch (error) {
+
+    $("rankingTable").innerHTML = `<tr><td colspan="4" class="empty-state">${escapeHTML(error.message)}</td></tr>`;
+
+    throw error;
+
+  }
+
 }
-function toggleBrochure(studentId){
- const s=rewardStudentById(studentId);if(!s)return;
- const current=brochureAllocations[studentId]||{allocated:false,quantity:0};
- if(current.allocated){if(!confirm(`Mark brochures as not allocated for ${s.name}?`))return;brochureAllocations[studentId]={allocated:false,quantity:0};addNotification(s.email,"Brochure allocation updated","Your brochure allocation has been marked as not allocated.");}
- else {const raw=prompt(`How many brochures are being allocated to ${s.name}?`,"20");if(raw===null)return;const quantity=Number(raw);if(!Number.isInteger(quantity)||quantity<1){alert("Enter a whole number greater than zero.");return;}brochureAllocations[studentId]={allocated:true,quantity,date:new Date().toLocaleDateString()};addNotification(s.email,"Brochures allocated",`${quantity} Talerang brochures have been allocated to you.`);}
- saveRewards();loadRewards();
+
+
+
+function renderRankings() {
+
+  const rows = demoMode
+
+    ? [...students].sort((a, b) => getStudentPoints(b) - getStudentPoints(a)).map((student, index) => ({
+
+      rank: index + 1, full_name: getStudentName(student), college: student.college,
+
+      total_points: getStudentPoints(student),
+
+    }))
+
+    : rankings;
+
+
+
+  $("rankingTable").innerHTML = rows.length ? rows.map((row, index) => `
+
+    <tr>
+
+      <td>#${Number(row.rank || index + 1)}</td>
+
+      <td><strong>${escapeHTML(row.full_name || row.name || "Student")}</strong></td>
+
+      <td>${escapeHTML(row.college || "—")}</td>
+
+      <td>${Number(row.total_points ?? row.points ?? 0).toLocaleString("en-IN")} pts</td>
+
+    </tr>`).join("") : '<tr><td colspan="4" class="empty-state">No ranking records found.</td></tr>';
+
 }
-// ============================================================
-// 13. APPROVE OR REJECT REWARD REQUESTS
-// ============================================================
-function decideReward(requestId,decision){
- const request=rewardRequests.find(r=>r.id===requestId);if(!request||request.status!=="Pending")return;
- const s=rewardStudentById(request.studentId);if(!s)return;
- if(decision==="Approved"&&s.points<request.pointsRequired){alert(`${s.name} does not currently have enough points for this reward.`);return;}
- request.status=decision;
- addNotification(s.email,decision==="Approved"?"Reward request approved":"Reward request rejected",decision==="Approved"?`Your request for ${request.reward} has been approved. The administrator will record the voucher details when it is issued.`:`Your request for ${request.reward} was not approved. Please contact the program administrator if you need clarification.`);
- saveRewards();loadRewards();
+
+
+
+// ------------------------------
+
+// Reward request management
+
+// ------------------------------
+
+async function loadRewards() {
+  if (demoMode) return renderRewards();
+  if (!requireLiveMode()) return;
+
+  $("rewardRequestList").innerHTML = '<p class="empty-state">Loading reward requests...</p>';
+  try {
+    const result = await api("/rewards/requests");
+    rewards = Array.isArray(result) ? result : (result.requests || result.items || []);
+    renderRewards();
+  } catch (error) {
+    $("rewardRequestList").innerHTML = `<p class="empty-state">${escapeHTML(error.message)}</p>`;
+    throw error;
+  }
 }
-// ============================================================
-// 14. ISSUE VOUCHER OR REWARD DETAILS
-// ============================================================
-function issueVoucher(requestId){
- const request=rewardRequests.find(r=>r.id===requestId);if(!request||request.status!=="Approved")return;
- const input=$(`voucher-${requestId}`);const voucher=input?input.value.trim():"";
- if(!voucher){alert("Enter a voucher code or reward fulfilment detail before issuing.");return;}
- const s=rewardStudentById(request.studentId);request.status="Issued";request.voucher=voucher;request.issuedAt=new Date().toLocaleString();
- if(s)addNotification(s.email,"Reward issued",`Your ${request.reward} has been issued. Details: ${voucher}`);
- saveRewards();loadRewards();
+
+function renderRewards() {
+  const counts = { pending: 0, approved: 0, rejected: 0, issued: 0 };
+  rewards.forEach((reward) => {
+    const status = normaliseStatus(reward.status);
+    if (Object.prototype.hasOwnProperty.call(counts, status)) counts[status] += 1;
+  });
+
+  $("rewardPendingCount").textContent = String(counts.pending);
+  ["pending", "approved", "rejected", "issued"].forEach((status) => {
+    const countElement = $(`reward${status.charAt(0).toUpperCase()}${status.slice(1)}Count`);
+    if (countElement) countElement.textContent = String(counts[status]);
+  });
+
+  const activeFilter = $("rewardStatusFilter")?.value || "all";
+  const filteredRewards = rewards.filter((reward) => {
+    const status = normaliseStatus(reward.status);
+    return activeFilter === "all" || status === activeFilter;
+  });
+
+  if (!filteredRewards.length) {
+    $("rewardRequestList").innerHTML = `<p class="empty-state">${rewards.length ? "No requests match this status." : "No reward requests found."}</p>`;
+    return;
+  }
+
+  $("rewardRequestList").innerHTML = filteredRewards.map((reward) => {
+    const status = normaliseStatus(reward.status);
+    const student = students.find((item) => Number(item.id) === Number(reward.student_id)) || {};
+    const studentName = reward.student_name || student.full_name || student.name || `Student #${reward.student_id}`;
+    const studentEmail = reward.student_email || student.email || "";
+    const currentPoints = Number(reward.current_points ?? reward.student_current_points ?? student.total_points ?? student.points ?? 0);
+    const pointsAtRequest = Number(reward.points_at_request ?? 0);
+    const note = reward.student_note || reward.note || "No note provided.";
+    const requestDate = reward.requested_at || reward.created_at;
+    const remarks = reward.admin_remarks || "";
+
+    return `
+      <article class="reward-request-card">
+        <div class="reward-request-top">
+          <div>
+            <h4>${escapeHTML(studentName)}</h4>
+            <p>${escapeHTML(studentEmail || "Email not available")}</p>
+          </div>
+          <span class="status ${escapeHTML(status)}">${escapeHTML(status)}</span>
+        </div>
+        <div class="reward-meta admin-reward-meta">
+          <span><small>Current points</small><strong>${currentPoints.toLocaleString("en-IN")} pts</strong></span>
+          <span><small>Points at request</small><strong>${pointsAtRequest.toLocaleString("en-IN")} pts</strong></span>
+          <span><small>Requested reward</small><strong>${escapeHTML(reward.reward_name || "—")}</strong></span>
+          <span><small>Request date</small><strong>${escapeHTML(formatDate(requestDate))}</strong></span>
+          <span class="reward-note-field"><small>Student note</small><strong>${escapeHTML(note)}</strong></span>
+        </div>
+        <div class="reward-contact-actions">
+          ${studentEmail ? `<button class="mini-button neutral" type="button" data-copy-email="${escapeHTML(studentEmail)}">Copy email</button>` : ""}
+        </div>
+        ${status === "pending" ? `
+          <div class="reward-actions">
+            <button class="mini-button success" type="button" data-reward-action="approve" data-reward-id="${Number(reward.id)}">Approve</button>
+            <button class="mini-button danger" type="button" data-reward-action="reject" data-reward-id="${Number(reward.id)}">Reject</button>
+          </div>` : ""}
+        ${status === "approved" ? `<p class="reward-admin-remark approved-remark"><strong>Admin note:</strong> ${escapeHTML(remarks || "Your reward request has been approved.")}</p>` : ""}
+        ${status === "rejected" ? `<p class="reward-admin-remark rejected-remark"><strong>Rejection reason:</strong> ${escapeHTML(remarks || "No reason provided.")}</p>` : ""}
+        ${status === "issued" ? `<p class="reward-admin-remark"><strong>Previously marked as issued.</strong>${remarks ? ` ${escapeHTML(remarks)}` : ""}</p>` : ""}
+      </article>`;
+  }).join("");
+
+  $("rewardRequestList").querySelectorAll("[data-reward-action]").forEach((button) => {
+    button.addEventListener("click", () => handleRewardAction(Number(button.dataset.rewardId), button.dataset.rewardAction));
+  });
+  $("rewardRequestList").querySelectorAll("[data-copy-email]").forEach((button) => {
+    button.addEventListener("click", () => copyEmail(button.dataset.copyEmail));
+  });
 }
-// ============================================================
-// 15. STUDENT NOTIFICATIONS (DEMO)
-// ============================================================
-function addNotification(email,title,message){
- adminNotifications.unshift({id:Date.now()+Math.random(),email,title,message,date:new Date().toLocaleString()});
- adminNotifications=adminNotifications.slice(0,100);saveRewards();
+
+async function handleRewardAction(rewardId, action) {
+  const reward = rewards.find((item) => Number(item.id) === rewardId);
+  if (!reward || !["approve", "reject"].includes(action)) return;
+
+  const isReject = action === "reject";
+  if (!window.confirm(`${isReject ? "Reject" : "Approve"} the request for ${reward.reward_name || "this reward"}?`)) return;
+
+  let adminRemarks = "";
+  if (isReject) {
+    adminRemarks = window.prompt("Please enter the reason for rejecting this request:");
+    if (adminRemarks === null) return;
+    adminRemarks = adminRemarks.trim();
+    if (!adminRemarks) {
+      showMessage("Please enter a rejection reason.", true);
+      return;
+    }
+  } else {
+    const enteredRemarks = window.prompt("Optional note for the student:", "");
+    if (enteredRemarks === null) return;
+    adminRemarks = enteredRemarks.trim() || "Your reward request has been approved.";
+  }
+
+  if (demoMode) {
+    reward.status = isReject ? "rejected" : "approved";
+    reward.admin_remarks = adminRemarks;
+    reward.reviewed_at = new Date().toISOString();
+    renderRewards();
+    showMessage(`Reward request ${isReject ? "rejected" : "approved"} in demo mode.`);
+    return;
+  }
+
+  try {
+    await api(`/rewards/requests/${rewardId}/${action}`, {
+      method: "PATCH",
+      body: JSON.stringify({ admin_remarks: adminRemarks })
+    });
+    await loadRewards();
+    showMessage(`Reward request ${isReject ? "rejected" : "approved"} successfully. No email was sent.`);
+  } catch (error) {
+    showMessage(error.message, true);
+  }
 }
-function renderAdminNotifications(){
- $("adminNotificationList").innerHTML=adminNotifications.slice(0,10).map(n=>`<div class="admin-notification"><strong>${escapeHTML(n.title)} · ${escapeHTML(n.email)}</strong><p>${escapeHTML(n.message)}</p><time>${escapeHTML(n.date)}</time></div>`).join("")||`<p class="empty-state">No notifications yet. Approve a task, allocate brochures or update a reward request to create one.</p>`;
+
+async function copyEmail(email) {
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(email);
+    } else {
+      const temporaryInput = document.createElement("textarea");
+      temporaryInput.value = email;
+      temporaryInput.style.position = "fixed";
+      temporaryInput.style.opacity = "0";
+      document.body.appendChild(temporaryInput);
+      temporaryInput.select();
+      document.execCommand("copy");
+      temporaryInput.remove();
+    }
+    showMessage(`Copied ${email}`);
+  } catch {
+    showMessage("Could not copy automatically. Please select and copy the email shown on the card.", true);
+  }
 }
-// ============================================================
-// 16. HELPER FUNCTIONS
-// ============================================================
-function refreshPosition(s){s.position=s.points>=300?"Chapter President":"Campus Ambassador";}
-function initials(name){return String(name||"").split(" ").map(word=>word.charAt(0)).join("").substring(0,2).toUpperCase();}
-function escapeHTML(value){return String(value??"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));}
-function safeURL(value){try{const url=new URL(value,window.location.href);return ["http:","https:"].includes(url.protocol)?url.href:"#";}catch(e){return "#";}}
-// ============================================================
-// 17. RESTORE DEMO LOGIN SESSION, IF PRESENT
-// ============================================================
-restoreAdminSession();
+
+// // Announcements (preview only)
+
+// // ------------------------------
+
+// function handleAnnouncementPreview(event) {
+
+//   event.preventDefault();
+
+//   const title = $("announcementTitle").value.trim();
+
+//   const description = $("announcementDescription").value.trim();
+
+//   const whatsappLink = $("announcementWhatsapp").value.trim();
+
+
+
+//   $("announcementPreview").innerHTML = `
+
+//     <span class="announcement-tag">ANNOUNCEMENT PREVIEW</span>
+
+//     <h3>${escapeHTML(title)}</h3>
+
+//     <p>${escapeHTML(description)}</p>
+
+//     ${whatsappLink ? `<a href="${escapeHTML(whatsappLink)}" target="_blank" rel="noopener noreferrer">Join WhatsApp group ↗</a>` : ""}
+
+//     <p class="muted-note">Preview only. This announcement has not been published to students.</p>`;
+
+//   showMessage("Announcement preview updated. It has not been published to students.");
+
+// }
+
+// ------------------------------
+
+// Announcements - Live API
+
+// ------------------------------
+
+
+
+async function loadAnnouncements() {
+
+  if (demoMode) {
+
+    $("announcementList").innerHTML =
+
+      '<p class="empty-state">Announcements are unavailable in demo mode.</p>';
+
+    return;
+
+  }
+
+
+
+  if (!requireLiveMode()) return;
+
+
+
+  $("announcementList").innerHTML =
+
+    '<p class="empty-state">Loading announcements...</p>';
+
+
+
+  try {
+
+    const result = await api("/announcements/admin");
+
+
+
+    const items = Array.isArray(result)
+
+      ? result
+
+      : (result.announcements || result.items || []);
+
+
+
+    renderAnnouncements(items);
+
+  } catch (error) {
+
+    $("announcementList").innerHTML =
+
+      `<p class="empty-state">${escapeHTML(error.message)}</p>`;
+
+  }
+
+}
+
+
+
+function renderAnnouncements(items) {
+
+  const container = $("announcementList");
+
+
+
+  if (!items.length) {
+
+    container.innerHTML =
+
+      '<p class="empty-state">No announcements created yet.</p>';
+
+    return;
+
+  }
+
+
+
+  container.innerHTML = items.map((item) => {
+
+    const published = Boolean(item.is_published);
+
+    const link = item.whatsapp_link || "";
+
+
+
+    return `
+
+      <article class="reward-request-card announcement-item">
+
+        <div class="reward-request-top">
+
+          <div>
+
+            <h4>${escapeHTML(item.title)}</h4>
+
+            <p>${escapeHTML(formatDate(item.created_at))}</p>
+
+          </div>
+
+          <span class="status ${published ? "completed" : "pending"}">
+
+            ${published ? "Published" : "Draft"}
+
+          </span>
+
+        </div>
+
+
+
+        <p class="submission-caption">
+
+          ${escapeHTML(item.description)}
+
+        </p>
+
+
+
+        ${link ? `
+
+          <p>
+
+            <a href="${escapeHTML(link)}"
+
+               target="_blank"
+
+               rel="noopener noreferrer">
+
+              WhatsApp link ↗
+
+            </a>
+
+          </p>
+
+        ` : ""}
+
+
+
+        <div class="reward-actions">
+
+          <button
+
+            class="mini-button ${published ? "neutral" : "success"}"
+
+            type="button"
+
+            data-announcement-action="publish"
+
+            data-announcement-id="${Number(item.id)}"
+
+            data-published="${published}">
+
+            ${published ? "Unpublish" : "Publish"}
+
+          </button>
+
+
+
+          <button
+
+            class="mini-button neutral"
+
+            type="button"
+
+            data-announcement-action="edit"
+
+            data-announcement-id="${Number(item.id)}">
+
+            Edit
+
+          </button>
+
+
+
+          <button
+
+            class="mini-button danger"
+
+            type="button"
+
+            data-announcement-action="delete"
+
+            data-announcement-id="${Number(item.id)}">
+
+            Delete
+
+          </button>
+
+        </div>
+
+      </article>
+
+    `;
+
+  }).join("");
+
+
+
+  container.querySelectorAll("[data-announcement-action]").forEach((button) => {
+
+    button.addEventListener("click", () => {
+
+      const id = Number(button.dataset.announcementId);
+
+      const action = button.dataset.announcementAction;
+
+
+
+      if (action === "publish") {
+
+        toggleAnnouncement(id, button.dataset.published === "true");
+
+      }
+
+
+
+      if (action === "edit") {
+
+        editAnnouncement(id, items);
+
+      }
+
+
+
+      if (action === "delete") {
+
+        deleteAnnouncement(id);
+
+      }
+
+    });
+
+  });
+
+}
+
+
+
+
+
+// Save a new announcement as a draft
+
+async function handleAnnouncementPreview(event) {
+
+  event.preventDefault();
+
+
+
+  const title = $("announcementTitle").value.trim();
+
+  const description = $("announcementDescription").value.trim();
+
+  const whatsappLink = $("announcementWhatsapp").value.trim();
+
+
+
+  if (!title || !description) {
+
+    showMessage("Please enter the announcement title and description.", true);
+
+    return;
+
+  }
+
+
+
+  if (demoMode) {
+
+    showMessage("Log in to the live Admin Portal to save announcements.", true);
+
+    return;
+
+  }
+
+
+
+  const button = $("announcementForm").querySelector('button[type="submit"]');
+
+  button.disabled = true;
+
+  button.textContent = "Saving...";
+
+
+
+  try {
+
+    await api("/announcements", {
+
+      method: "POST",
+
+      body: JSON.stringify({
+
+        title,
+
+        description,
+
+        whatsapp_link: whatsappLink || null
+
+      })
+
+    });
+
+
+
+    $("announcementForm").reset();
+
+
+
+    $("announcementPreview").innerHTML = `
+
+      <h3>No announcement yet</h3>
+
+      <p>Your announcement preview will appear here.</p>
+
+    `;
+
+
+
+    await loadAnnouncements();
+
+    showMessage("Announcement saved as a draft successfully.");
+
+  } catch (error) {
+
+    showMessage(error.message, true);
+
+  } finally {
+
+    button.disabled = false;
+
+    button.textContent = "Save as Draft";
+
+  }
+
+}
+
+
+
+
+
+// Publish or unpublish
+
+async function toggleAnnouncement(id, currentlyPublished) {
+
+  const nextStatus = !currentlyPublished;
+
+
+
+  const actionText = nextStatus ? "publish" : "unpublish";
+
+
+
+  if (!window.confirm(`Are you sure you want to ${actionText} this announcement?`)) {
+
+    return;
+
+  }
+
+
+
+  try {
+
+    await api(`/announcements/${id}/publish`, {
+
+      method: "PATCH",
+
+      body: JSON.stringify({
+
+        is_published: nextStatus
+
+      })
+
+    });
+
+
+
+    await loadAnnouncements();
+
+
+
+    showMessage(
+
+      `Announcement ${nextStatus ? "published" : "unpublished"} successfully.`
+
+    );
+
+  } catch (error) {
+
+    showMessage(error.message, true);
+
+  }
+
+}
+
+
+
+
+
+// Edit an announcement
+
+async function editAnnouncement(id, items) {
+
+  const item = items.find((announcement) => Number(announcement.id) === id);
+
+  if (!item) return;
+
+
+
+  const title = window.prompt("Edit announcement title:", item.title);
+
+  if (title === null) return;
+
+
+
+  const description = window.prompt(
+
+    "Edit announcement description:",
+
+    item.description
+
+  );
+
+  if (description === null) return;
+
+
+
+  const whatsappLink = window.prompt(
+
+    "Edit WhatsApp link (leave blank if not required):",
+
+    item.whatsapp_link || ""
+
+  );
+
+  if (whatsappLink === null) return;
+
+
+
+  if (!title.trim() || !description.trim()) {
+
+    showMessage("Title and description cannot be empty.", true);
+
+    return;
+
+  }
+
+
+
+  try {
+
+    await api(`/announcements/${id}`, {
+
+      method: "PUT",
+
+      body: JSON.stringify({
+
+        title: title.trim(),
+
+        description: description.trim(),
+
+        whatsapp_link: whatsappLink.trim() || null
+
+      })
+
+    });
+
+
+
+    await loadAnnouncements();
+
+    showMessage("Announcement updated successfully.");
+
+  } catch (error) {
+
+    showMessage(error.message, true);
+
+  }
+
+}
+
+
+
+
+
+// Delete an announcement
+
+async function deleteAnnouncement(id) {
+
+  if (!window.confirm("Are you sure you want to delete this announcement?")) {
+
+    return;
+
+  }
+
+
+
+  try {
+
+    await api(`/announcements/${id}`, {
+
+      method: "DELETE"
+
+    });
+
+
+
+    await loadAnnouncements();
+
+    showMessage("Announcement deleted successfully.");
+
+  } catch (error) {
+
+    showMessage(error.message, true);
+
+  }
+
+}
+
+// ------------------------------
+
+// Event listeners and initial state
+
+// ------------------------------
+
+$("adminLoginForm").addEventListener("submit", handleLogin);
+
+$("demoModeBtn").addEventListener("click", startDemo);
+
+$("exitDemoBtn").addEventListener("click", logout);
+
+$("logoutBtn").addEventListener("click", logout);
+
+$("studentSearch").addEventListener("input", filterStudents);
+
+$("announcementForm").addEventListener("submit", handleAnnouncementPreview);
+
+$("refreshAnnouncements").addEventListener("click", loadAnnouncements);
+if ($("rewardStatusFilter")) $("rewardStatusFilter").addEventListener("change", renderRewards);
+
+
+
+document.querySelectorAll(".admin-nav-item").forEach((button) => {
+
+  button.addEventListener("click", () => showPage(button.dataset.page));
+
+});
+
+
+
+// If an admin token already exists, validate it and reopen the portal.
+
+(async function restoreAdminSession() {
+
+  if (!localStorage.getItem(TOKEN_KEY)) return;
+
+  try {
+
+    const currentUser = await api("/user/me");
+
+    if (String(currentUser.role || "").toLowerCase() !== "admin") throw new Error("Not an admin account");
+
+    $("adminAuth").classList.add("hidden");
+
+    $("adminPortal").classList.remove("hidden");
+
+    await loadStudents();
+
+    await loadRankings();
+
+    await loadRewards();
+
+    await loadAnnouncements();
+
+    showPage("students");
+
+  } catch {
+
+    localStorage.removeItem(TOKEN_KEY);
+
+  }
+
+})();

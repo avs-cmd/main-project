@@ -21,6 +21,7 @@ app.add_middleware(
     allow_origins=[
         "https://avs-cmd.github.io",
         "https://talerang-campus-portal.onrender.com",
+        "https://talerang-admin-portal.onrender.com",
         "http://127.0.0.1:5500",
         "http://localhost:5500",
         "http://127.0.0.1:5501",

@@ -1,0 +1,207 @@
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta content="width=device-width,initial-scale=1" name="viewport">
+  <title>Talerang | Admin Portal</title>
+  <link href="admin.css" rel="stylesheet">
+</head>
+<body>
+  <div class="admin-auth" id="adminAuth">
+    <div class="auth-brand">
+      <img alt="Talerang" src="talerang-logo.png">
+      <span>ADMIN PORTAL</span>
+    </div>
+    <div class="auth-card">
+      <div class="auth-heading">
+        <span class="small-label">TALERANG</span>
+        <h1>Welcome back</h1>
+        <p>Sign in to manage the Campus Ambassador programme.</p>
+      </div>
+      <form id="adminLoginForm">
+        <div class="input-group">
+          <label for="adminLoginEmail">Email</label>
+          <input id="adminLoginEmail" placeholder="admin@talerang.com" required="" type="email">
+        </div>
+        <div class="input-group">
+          <label for="adminLoginPassword">Password</label>
+          <input id="adminLoginPassword" placeholder="Enter password" required="" type="password">
+        </div>
+        <button class="auth-button" type="submit">Login to Admin Portal</button>
+      </form>
+      <button class="demo-link" id="demoModeBtn" type="button">Explore interactive demo</button>
+      <p class="auth-message" id="authMessage"></p>
+      <div class="auth-security">Authorized Talerang administrators only.</div>
+    </div>
+  </div>
+
+  <div class="admin-portal hidden" id="adminPortal">
+    <aside class="admin-sidebar">
+      <div class="brand-area">
+        <img alt="Talerang" src="talerang-logo.png">
+        <div><strong>ADMIN</strong><span>Campus Ambassador</span></div>
+      </div>
+      <nav class="admin-nav">
+        <button class="admin-nav-item active" data-page="students">◎ Student Information</button>
+        <button class="admin-nav-item" data-page="rankings">♛ Rankings</button>
+        <button class="admin-nav-item" data-page="rewards">★ Reward Management</button>
+        <button class="admin-nav-item" data-page="announcements">✉ Announcements</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="admin-user">
+          <div class="admin-avatar">A</div>
+          <div><strong>Administrator</strong><span>Admin</span></div>
+        </div>
+        <button class="logout-button" id="logoutBtn">Logout</button>
+      </div>
+    </aside>
+
+    <main class="admin-main">
+      <header class="topbar">
+        <div><span class="topbar-label">TALERANG ADMIN</span><h2 id="pageTitle">Student Information</h2></div>
+        <div class="topbar-right">
+          <div class="topbar-user"><span>Welcome back</span><strong>Administrator</strong></div>
+          <div class="top-avatar">A</div>
+        </div>
+      </header>
+
+      <div class="demo-banner hidden" id="demoBanner">
+        <strong>Interactive demo mode</strong>
+        <span>Sample records only. Changes do not affect the live database.</span>
+        <button id="exitDemoBtn">Exit demo</button>
+      </div>
+      <div class="global-message hidden" id="globalMessage" role="status"></div>
+
+      <section class="admin-page active" id="studentsPage">
+        <div class="page-intro">
+          <div>
+            <span class="section-label">STUDENT MANAGEMENT</span>
+            <h1>Student Information</h1>
+            <p>Select a student to see their profile, activity evidence, points and rewards.</p>
+          </div>
+          <input class="search-box" id="studentSearch" placeholder="Search name, email or college" type="search">
+        </div>
+        <div class="content-card table-card">
+          <div class="table-container">
+            <table>
+              <thead><tr><th>Student</th><th>Email</th><th>College</th><th>LinkedIn</th><th>Points</th><th>Designation</th><th>Rewards</th></tr></thead>
+              <tbody id="studentsTable"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="student-profile hidden" id="studentProfile"></div>
+      </section>
+
+      <section class="admin-page" id="rankingsPage">
+        <div class="page-intro">
+          <div><span class="section-label">PERFORMANCE</span><h1>Rankings</h1><p>Campus Ambassador leaderboard based on points.</p></div>
+        </div>
+        <div class="content-card table-card">
+          <div class="table-container">
+            <table>
+              <thead><tr><th>Rank</th><th>Student</th><th>College</th><th>Points</th></tr></thead>
+              <tbody id="rankingTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Only this Reward Management section has been updated. -->
+      <section class="admin-page" id="rewardsPage">
+        <div class="page-intro">
+          <div>
+            <span class="section-label">REWARDS</span>
+            <h1>Reward Management</h1>
+            <p>Review student reward requests. Copy the student's email to contact them separately.</p>
+          </div>
+        </div>
+
+        <div class="content-card roadmap-admin-card">
+          <div class="card-header">
+            <div>
+              <span class="section-label">REWARD ROADMAP</span>
+              <h3>Points milestone guide</h3>
+              <p>Reference guide only. Students can request rewards manually; points do not automatically unlock or restrict requests.</p>
+            </div>
+          </div>
+          <div class="admin-roadmap-grid">
+            <div><strong>250 pts</strong><span>Talerang Gift Pack</span></div>
+            <div><strong>500 pts</strong><span>₹500 Voucher</span></div>
+            <div><strong>750 pts</strong><span>Spotify Subscription</span></div>
+            <div><strong>1,000 pts</strong><span>Netflix Subscription</span></div>
+            <div><strong>1,500 pts</strong><span>Sponsored Lunch</span></div>
+            <div><strong>2,000 pts</strong><span>Trip to Alibaug</span></div>
+          </div>
+        </div>
+
+        <div class="reward-status-summary">
+          <div class="content-card reward-count-card">
+            <div><span class="section-label">PENDING</span><p>Waiting for review</p></div>
+            <strong id="rewardPendingCount">0</strong>
+          </div>
+          <div class="content-card reward-count-card">
+            <div><span class="section-label">APPROVED</span><p>Approved requests</p></div>
+            <strong id="rewardApprovedCount">0</strong>
+          </div>
+          <div class="content-card reward-count-card">
+            <div><span class="section-label">REJECTED</span><p>Rejected requests</p></div>
+            <strong id="rewardRejectedCount">0</strong>
+          </div>
+          <div class="content-card reward-count-card">
+            <div><span class="section-label">ISSUED</span><p>Historical records</p></div>
+            <strong id="rewardIssuedCount">0</strong>
+          </div>
+        </div>
+
+        <div class="content-card">
+          <div class="card-header reward-list-header">
+            <div><h3>Student reward requests</h3><p>Review the student's details and request. No voucher or issue form is required here.</p></div>
+            <label class="reward-filter-label" for="rewardStatusFilter">
+              Filter
+              <select id="rewardStatusFilter" class="reward-status-filter">
+                <option value="all">All requests</option>
+                <option value="pending">Pending</option>
+                <option value="approved">Approved</option>
+                <option value="rejected">Rejected</option>
+                <option value="issued">Issued (history)</option>
+              </select>
+            </label>
+          </div>
+          <div id="rewardRequestList" class="reward-request-list">
+            <p class="empty-state">Loading reward requests…</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="admin-page" id="announcementsPage">
+        <div class="page-intro">
+          <div><span class="section-label">COMMUNICATION</span><h1>Announcements</h1><p>Create, manage and publish updates for Campus Ambassadors.</p></div>
+        </div>
+        <div class="announcement-grid">
+          <div class="content-card">
+            <div class="card-header"><div><h3>Create announcement</h3><p>Write an update for students.</p></div></div>
+            <form id="announcementForm">
+              <div class="input-group"><label for="announcementTitle">Title</label><input id="announcementTitle" placeholder="Weekly Team Call" required=""></div>
+              <div class="input-group"><label for="announcementDescription">Description</label><textarea id="announcementDescription" placeholder="Write your announcement..." required=""></textarea></div>
+              <div class="input-group"><label for="announcementWhatsapp">WhatsApp link (optional)</label><input id="announcementWhatsapp" placeholder="https://chat.whatsapp.com/..." type="url"></div>
+              <button class="primary-button" type="submit">Save as Draft</button>
+            </form>
+          </div>
+          <div class="content-card">
+            <div class="card-header"><div><h3>Announcement preview</h3></div></div>
+            <div class="announcement-preview" id="announcementPreview"><h3>No announcement yet</h3><p>Your announcement preview will appear here.</p></div>
+          </div>
+        </div>
+        <div class="content-card announcement-management">
+          <div class="card-header">
+            <div><h3>Manage announcements</h3><p>View drafts and published announcements.</p></div>
+            <button class="mini-button neutral" id="refreshAnnouncements" type="button">Refresh</button>
+          </div>
+          <div id="announcementList"><p class="empty-state">Loading announcements...</p></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="admin-config.js"></script>
+  <script src="admin.js"></script>
+
+</body></html>

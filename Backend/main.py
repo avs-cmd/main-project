@@ -2,6 +2,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
 
 from src.user.router import router as user_router
 from src.tasks.router import router as tasks_router
@@ -15,6 +17,25 @@ app = FastAPI(
     title="Talerang Campus Ambassador API",
     version="1.0.0",
 )
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request, exc):
+    safe_errors = []
+
+    for error in exc.errors():
+        safe_error = dict(error)
+
+        # Do not attempt to encode binary image data as UTF-8.
+        if isinstance(safe_error.get("input"), (bytes, bytearray)):
+            safe_error["input"] = "[binary image data]"
+
+        safe_errors.append(safe_error)
+
+    print("REQUEST VALIDATION ERROR:", safe_errors)
+
+    return JSONResponse(
+        status_code=422,
+        content={"detail": safe_errors},
+    )
 
 app.add_middleware(
     CORSMiddleware,

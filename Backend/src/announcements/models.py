@@ -12,7 +12,7 @@ class Announcement(Base):
     title = Column(String(200), nullable=False)
     description = Column(Text, nullable=False)
     whatsapp_link = Column(String(1000), nullable=True)
-
+    image_url = Column(String(1000), nullable=True)
     created_by = Column(
         Integer,
         ForeignKey("users.id"),

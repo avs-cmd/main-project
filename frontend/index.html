@@ -317,9 +317,7 @@
 <button class="nav-item" data-page="announcements">
     <span class="nav-symbol">!</span>
     <span>Announcements</span>
-    <span id="announcementNotificationDot"
-          class="announcement-notification-dot"
-          hidden></span>
+    <span id="announcementNotificationDot" class="announcement-notification-dot" hidden=""></span>
 </button>
             <button class="nav-item" data-page="rewards"><span class="nav-symbol">₹</span><span>Rewards</span></button>
             <button class="nav-item" data-page="profile"><span class="nav-symbol">○</span><span>Profile</span></button>
@@ -1263,27 +1261,29 @@
         ================================================= -->
 
         <section id="announcements" class="portal-section">
+            <div class="announcement-page-intro">
+                <div>
+                    <span class="section-label">TALERANG UPDATES</span>
+                    <h1>Announcements</h1>
+                    <p>Stay informed with the latest news, opportunities and important updates from the Talerang team.</p>
+                </div>
+                <div class="announcement-intro-mark" aria-hidden="true">!</div>
+            </div>
 
-    <div class="page-heading">
-        <span class="section-label">STAY UPDATED</span>
-        <h1>Announcements</h1>
-        <p>Important updates and communication from Talerang.</p>
-    </div>
+            <div class="announcement-toolbar">
+                <div class="announcement-toolbar-copy">
+                    <strong>What's happening</strong>
+                    <span>Official updates for Campus Ambassadors</span>
+                </div>
+                <button type="button" class="outline-dark-btn" id="refreshStudentAnnouncements">
+                    <span aria-hidden="true">↻</span> Refresh updates
+                </button>
+            </div>
 
-    <div class="announcement-toolbar">
-        <p>Updates published by the Talerang team.</p>
-
-        <button type="button" class="outline-dark-btn"
-                id="refreshStudentAnnouncements">
-            Refresh updates
-        </button>
-    </div>
-
-    <div id="studentAnnouncementsList" class="student-announcements-list">
-        <p class="announcement-empty">Loading announcements...</p>
-    </div>
-
-</section>
+            <div id="studentAnnouncementsList" class="student-announcements-list" aria-live="polite">
+                <p class="announcement-empty">Loading announcements...</p>
+            </div>
+        </section>
 
 
         <!-- =================================================

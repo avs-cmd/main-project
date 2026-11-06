@@ -31,3 +31,4 @@ class AnnouncementResponse(BaseModel):
     is_published: bool
     created_at: datetime
     updated_at: datetime
+    image_url: Optional[str] = None

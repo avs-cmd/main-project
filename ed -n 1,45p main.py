@@ -1,0 +1,14 @@
+18	14	Backend/src/announcements/controller.py
+1	0	Backend/src/announcements/dtos.py
+1	1	Backend/src/announcements/models.py
+180	17	Backend/src/announcements/router.py
+0	13	frontend/admin-config.js
+0	235	frontend/admin.css
+0	207	frontend/admin.html
+0	1753	frontend/admin.js
+42	0	frontend/admin/admin.css
+22	5	frontend/admin/admin.html
+76	917	frontend/admin/admin.js
+7990	1449	frontend/index.css
+22	22	frontend/index.html
+1459	48	frontend/script.js

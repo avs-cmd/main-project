@@ -181,14 +181,31 @@
             <form id="announcementForm">
               <div class="input-group"><label for="announcementTitle">Title</label><input id="announcementTitle" placeholder="Weekly Team Call" required=""></div>
               <div class="input-group"><label for="announcementDescription">Description</label><textarea id="announcementDescription" placeholder="Write your announcement..." required=""></textarea></div>
-              <div class="input-group"><label for="announcementWhatsapp">WhatsApp link (optional)</label><input id="announcementWhatsapp" placeholder="https://chat.whatsapp.com/..." type="url"></div>
+<div class="input-group">
+  <label for="announcementWhatsapp">WhatsApp link (optional)</label>
+  <input id="announcementWhatsapp" type="url"
+         placeholder="https://chat.whatsapp.com/...">
+</div>
+
+<div class="input-group">
+  <label for="announcementImage">Announcement image (optional)</label>
+  <input
+    id="announcementImage"
+    type="file"
+    accept="image/jpeg,image/png,image/webp"
+  >
+  <small class="field-hint">JPG, PNG or WebP · Maximum size: 2 MB</small>
+  <div id="announcementImagePreview" class="announcement-image-upload-preview hidden">
+    <img id="announcementPreviewImage" src="" alt="Selected announcement image">
+    <button id="removeAnnouncementImage" type="button" class="mini-button danger">
+      Remove image
+    </button>
+  </div>
+</div>
               <button class="primary-button" type="submit">Save as Draft</button>
             </form>
           </div>
-          <div class="content-card">
-            <div class="card-header"><div><h3>Announcement preview</h3></div></div>
-            <div class="announcement-preview" id="announcementPreview"><h3>No announcement yet</h3><p>Your announcement preview will appear here.</p></div>
-          </div>
+          
         </div>
         <div class="content-card announcement-management">
           <div class="card-header">

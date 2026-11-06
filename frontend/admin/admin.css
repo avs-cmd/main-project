@@ -233,3 +233,45 @@ td { padding:15px 18px; font-size:12px; }
     flex: 1;
   }
 }
+/* Announcement image upload */
+.field-hint {
+  display: block;
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.announcement-image-upload-preview {
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #F7F7FA;
+}
+
+.announcement-image-upload-preview img {
+  display: block;
+  width: 100%;
+  max-height: 220px;
+  object-fit: contain;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.announcement-preview-image {
+  display: block;
+  width: 100%;
+  max-height: 240px;
+  object-fit: cover;
+  border-radius: 9px;
+  margin: 12px 0;
+}
+
+.announcement-item-image {
+  display: block;
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  border-radius: 9px;
+  margin: 12px 0;
+}
